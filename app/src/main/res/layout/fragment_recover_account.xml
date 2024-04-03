@@ -51,15 +51,18 @@
                 android:textSize="15dp"/>
 
             <EditText
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit"
                 android:drawableLeft="@drawable/ic_hint_login"
+                android:inputType="textEmailAddress"
                 android:textColorHint="@color/color_default"
                 android:hint=" E-mail"
                 android:padding="16dp"/>
 
             <Button
+                android:id="@+id/btnSend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -67,6 +70,16 @@
                 android:text="Enviar e-mail"
                 android:textColor="@color/white"
                 android:textSize="25dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:indeterminateTint="@color/blue_app"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 
 

@@ -40,27 +40,32 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/bg_edit"
                 android:drawableLeft="@drawable/ic_hint_login"
-                android:textColorHint="@color/color_default"
+                android:inputType="textEmailAddress"
                 android:hint=" Usuário"
-                android:padding="16dp"/>
+                android:padding="16dp"
+                android:textColorHint="@color/color_default" />
 
 
             <EditText
+                android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_edit"
                 android:drawableLeft="@drawable/ic_hint_password"
-                android:textColorHint="@color/color_default"
+                android:inputType="textPassword"
                 android:hint=" Senha"
-                android:padding="16dp"/>
+                android:padding="16dp"
+                android:textColorHint="@color/color_default" />
 
             <Button
+                android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -68,6 +73,16 @@
                 android:text="Criar conta"
                 android:textColor="@color/white"
                 android:textSize="25dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:indeterminateTint="@color/blue_app"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 
 

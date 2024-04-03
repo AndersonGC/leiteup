@@ -21,27 +21,32 @@
             android:src="@drawable/leiteup_login" />
 
         <EditText
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/bg_edit"
             android:textColorHint="@color/color_default"
             android:drawableLeft="@drawable/ic_hint_login"
+            android:inputType="textEmailAddress"
             android:hint=" Usuário"
             android:padding="16dp"/>
 
 
         <EditText
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_edit"
             android:textColorHint="@color/color_default"
             android:drawableLeft="@drawable/ic_hint_password"
+            android:inputType="textPassword"
             android:hint=" Senha"
             android:padding="16dp"/>
 
         <Button
+            android:id="@+id/btnLogin"
             android:layout_width="255dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
@@ -60,11 +65,20 @@
             android:textColor="@color/black"
             android:textSize="15dp" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            android:indeterminateTint="@color/blue_app"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
 
             android:orientation="horizontal">
 

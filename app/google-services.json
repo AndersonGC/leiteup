@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "816097339043",
+    "project_id": "leite-up",
+    "storage_bucket": "leite-up.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816097339043:android:67cd94f0c7aabb1a9ac116",
+        "android_client_info": {
+          "package_name": "com.leiteup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdIzf6nTdBmFHcDIopQYQ3QFUi1TDdy9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
