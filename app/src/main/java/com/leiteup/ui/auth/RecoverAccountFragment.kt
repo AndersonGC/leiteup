@@ -63,9 +63,8 @@ class RecoverAccountFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(requireContext(), "Foi enviado um e-mail para a redefinição de senha", Toast.LENGTH_SHORT).show()
-                } else {
-                    binding.progressBar.isVisible = false;
                 }
+                binding.progressBar.isVisible = false;
             }
     }
 

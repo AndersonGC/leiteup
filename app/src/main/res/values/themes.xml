@@ -3,5 +3,6 @@
     <style name="Theme.LeiteUp" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/color_default</item>
         <item name="colorPrimaryVariant">@color/color_default</item>
+        <item name="android:fontFamily">@font/montserrat_light</item>
     </style>
 </resources>
