@@ -69,9 +69,8 @@ class RegisterFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                } else {
-                    binding.progressBar.isVisible = false;
                 }
+                binding.progressBar.isVisible = false;
             }
     }
 

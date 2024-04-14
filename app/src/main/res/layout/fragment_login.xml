@@ -102,6 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/montserrat"
                     android:paddingVertical="8dp"
                     android:text="Cadastre-se"
                     android:textColor="@color/black"

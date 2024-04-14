@@ -80,9 +80,8 @@ class LoginFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                } else {
-                    binding.progressBar.isVisible = false;
                 }
+                binding.progressBar.isVisible = false;
             }
     }
 
