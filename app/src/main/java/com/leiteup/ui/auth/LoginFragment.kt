@@ -72,7 +72,6 @@ class LoginFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Informe seu e-mail.", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun loginUser(email: String, password: String) {
