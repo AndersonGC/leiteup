@@ -1,6 +1,7 @@
 package com.leiteup.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.google.firebase.auth.auth
 import com.leiteup.R
 import com.leiteup.databinding.FragmentLoginBinding
 import com.leiteup.databinding.FragmentRecoverAccountBinding
+import com.leiteup.helper.FirebaseHelper
 
 class RecoverAccountFragment : Fragment() {
 
@@ -63,8 +65,15 @@ class RecoverAccountFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(requireContext(), "Foi enviado um e-mail para a redefinição de senha", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), FirebaseHelper.validError(task.exception?.message ?: ""),
+                        Toast.LENGTH_SHORT).show()
+
+                    Log.i("RECOVER_ERROR", "loginUser: ${task.exception?.message}")
+
+                    binding.progressBar.isVisible = false;
                 }
-                binding.progressBar.isVisible = false;
+
             }
     }
 

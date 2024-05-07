@@ -1,6 +1,7 @@
 package com.leiteup.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.leiteup.R
 import com.leiteup.databinding.FragmentRegisterBinding
+import com.leiteup.helper.FirebaseHelper
 
 class RegisterFragment : Fragment() {
 
@@ -69,8 +71,14 @@ class RegisterFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+                } else {
+                    Toast.makeText(requireContext(), FirebaseHelper.validError(task.exception?.message ?: ""),
+                        Toast.LENGTH_SHORT).show()
+
+                    Log.i("REGISTER_ERROR", "loginUser: ${task.exception?.message}")
+
+                    binding.progressBar.isVisible = false;
                 }
-                binding.progressBar.isVisible = false;
             }
     }
 

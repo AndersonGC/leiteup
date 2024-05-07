@@ -1,0 +1,11 @@
+<resources>
+    <string-array name="sexo_options">
+        <item>Masculino</item>
+        <item>Feminino</item>
+    </string-array>
+
+    <string-array name="iatf_options">
+        <item>Sim</item>
+        <item>Não</item>
+    </string-array>
+</resources>
