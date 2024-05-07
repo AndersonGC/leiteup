@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.FormCowFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Cadastrar animal"
+                    android:textColor="@color/blue_app"
+                    android:textAllCaps="true"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="Brinco:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtEarring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="number"
+                android:padding="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Sexo:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutSexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@drawable/bg_text_input_layout">
+
+                <!-- Botões dentro do TextInputLayout -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonMasculino"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_male"
+                        android:layout_weight="1"
+                        android:text="Macho"
+                        android:textColor="#003480"
+                        android:background="@color/white"/>
+
+                    <Button
+                        android:id="@+id/buttonFeminino"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_female"
+                        android:layout_weight="1"
+                        android:text="Fêmea"
+                        android:textColor="#003480"
+                        android:background="@color/white"/>
+                </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Raça:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtBreed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:padding="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Peso:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="number"
+                android:padding="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Data de nascimento:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="date"
+                android:hint="DD/MM/AAAA"
+                android:textColorHint="@color/color_default"
+                android:padding="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Nascido de IATF:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/teste"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@drawable/bg_text_input_layout">
+
+                <!-- Botões dentro do TextInputLayout -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/bttPositive"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sim"
+                        android:textColor="#003480"
+                        android:background="@color/white"/>
+
+                    <Button
+                        android:id="@+id/bttNegative"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Não"
+                        android:textColor="#003480"
+                        android:background="@color/white"/>
+                </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Pai:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtFather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:padding="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Mãe:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtMother"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:padding="16dp"/>
+
+
+
+
+
+
+
+
+
+            <Button
+                android:id="@+id/btnAddCow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/bt_gradient"
+                android:text="Cadastrar"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:indeterminateTint="@color/blue_app"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

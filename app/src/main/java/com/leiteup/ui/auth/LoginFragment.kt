@@ -1,6 +1,7 @@
 package com.leiteup.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.google.firebase.auth.auth
 import com.leiteup.R
 import com.leiteup.databinding.FragmentLoginBinding
 import com.leiteup.databinding.FragmentSplashBinding
+import com.leiteup.helper.FirebaseHelper
 
 class LoginFragment : Fragment() {
 
@@ -79,8 +81,14 @@ class LoginFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                } else {
+                    Toast.makeText(requireContext(), FirebaseHelper.validError(task.exception?.message ?: ""),
+                        Toast.LENGTH_SHORT).show()
+
+                    Log.i("LOGIN_ERROR", "loginUser: ${task.exception?.message}")
+
+                    binding.progressBar.isVisible = false;
                 }
-                binding.progressBar.isVisible = false;
             }
     }
 

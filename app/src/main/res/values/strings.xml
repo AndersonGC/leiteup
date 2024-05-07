@@ -2,4 +2,12 @@
     <string name="app_name">Leite Up</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    Erros Firebase Authentication-->
+    <string name="account_not_registered_fragment">Login ou senha inválidos.</string>
+    <string name="invalid_register_fragment">Insira um e-mail válido.</string>
+    <string name="email_in_use_register_fragment">Este e-mail já está em uso.</string>
+    <string name="strong_password_register_fragment">Insira uma senha mais forte.</string>
+    <string name="generic_error">Ocorreu um erro, tente novamente mais tarde!</string>
+
 </resources>
