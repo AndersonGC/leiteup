@@ -25,7 +25,7 @@
 
             <!-- Foto do animal à esquerda -->
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageAnimal"
+                android:id="@+id/cowImage"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="16dp"
@@ -37,7 +37,7 @@
             <!-- Nome do animal à direita -->
 
             <TextView
-                android:id="@+id/earringName"
+                android:id="@+id/earring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
@@ -47,22 +47,22 @@
                 android:text="110"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal"
+                app:layout_constraintStart_toEndOf="@+id/cowImage"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/raceName"
+                android:id="@+id/breed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:gravity="center"
                 android:text="Gir"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal"
-                app:layout_constraintTop_toBottomOf="@+id/earringName" />
+                app:layout_constraintStart_toEndOf="@+id/cowImage"
+                app:layout_constraintTop_toBottomOf="@+id/earring" />
 
             <TextView
-                android:id="@+id/genderName"
+                android:id="@+id/gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -71,12 +71,12 @@
                 android:text="Fêmea"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal"
+                app:layout_constraintStart_toEndOf="@+id/cowImage"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.321" />
 
             <TextView
-                android:id="@+id/yearsOldName"
+                android:id="@+id/yearsOld"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -85,7 +85,7 @@
                 android:text="5A"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal"
+                app:layout_constraintStart_toEndOf="@+id/cowImage"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.321" />
 

@@ -38,8 +38,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
 
+<!--            Earring-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,6 +59,7 @@
                 android:inputType="number"
                 android:padding="16dp"/>
 
+<!--            Gender-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,41 +69,40 @@
                 android:textSize="16sp"
                 android:textColor="@color/blue_app"
                 android:layout_marginBottom="8dp"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutSexo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:background="@drawable/bg_text_input_layout">
-
-                <!-- Botões dentro do TextInputLayout -->
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_input_text"
+                    android:padding="14dp">
 
-                    <Button
-                        android:id="@+id/buttonMasculino"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/ic_male"
+                    <RadioButton
+                        android:id="@+id/bttMale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:drawableEnd="@drawable/ic_male"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
                         android:text="Macho"
-                        android:textColor="#003480"
-                        android:background="@color/white"/>
+                        android:textColor="@drawable/bg_text_input_layout"
+                        />
 
-                    <Button
-                        android:id="@+id/buttonFeminino"
-                        android:layout_width="0dp"
+                    <RadioButton
+                        android:id="@+id/bttFamale"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableTop="@drawable/ic_female"
+                        android:layout_marginLeft="5dp"
+                        android:drawableEnd="@drawable/ic_female"
                         android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
                         android:text="Fêmea"
-                        android:textColor="#003480"
-                        android:background="@color/white"/>
+                        android:textColor="#003480"/>
                 </LinearLayout>
-            </com.google.android.material.textfield.TextInputLayout>
 
+<!--            Breed-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,6 +119,7 @@
                 android:background="@drawable/bg_input_text"
                 android:padding="16dp"/>
 
+<!--            Weight-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,6 +137,7 @@
                 android:inputType="number"
                 android:padding="16dp"/>
 
+<!--            Birth Day-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,6 +157,7 @@
                 android:textColorHint="@color/color_default"
                 android:padding="16dp"/>
 
+<!--            IATF-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,40 +167,37 @@
                 android:textSize="16sp"
                 android:textColor="@color/blue_app"
                 android:layout_marginBottom="8dp"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/teste"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:background="@drawable/bg_text_input_layout">
+                android:orientation="horizontal"
+                android:background="@drawable/bg_input_text"
+                android:padding="15dp">
 
-                <!-- Botões dentro do TextInputLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <RadioButton
+                    android:id="@+id/bttPositive"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Sim"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:textColor="#003480"/>
 
-                    <Button
-                        android:id="@+id/bttPositive"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Sim"
-                        android:textColor="#003480"
-                        android:background="@color/white"/>
+                <RadioButton
+                    android:id="@+id/bttNegative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Não"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:textColor="#003480"/>
+            </LinearLayout>
 
-                    <Button
-                        android:id="@+id/bttNegative"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Não"
-                        android:textColor="#003480"
-                        android:background="@color/white"/>
-                </LinearLayout>
-            </com.google.android.material.textfield.TextInputLayout>
-
+<!--            Father-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,6 +214,7 @@
                 android:background="@drawable/bg_input_text"
                 android:padding="16dp"/>
 
+<!--            Mother-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -228,7 +231,7 @@
                 android:background="@drawable/bg_input_text"
                 android:padding="16dp"/>
 
-
+<!--            Cadastrar-->
             <Button
                 android:id="@+id/btnAddCow"
                 android:layout_width="250dp"
