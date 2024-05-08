@@ -11,6 +11,7 @@ data class Cow(
 
     var id: String = "",
     var cowImage: ByteArray? = null,
+    var name: String = "",
     var earring: Int = 0,
     var gender: String = "",
     var breed: String = "",
