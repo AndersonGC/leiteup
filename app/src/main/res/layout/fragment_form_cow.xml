@@ -59,6 +59,24 @@
                 android:inputType="number"
                 android:padding="16dp"/>
 
+<!--            Name-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Nome:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="number"
+                android:padding="16dp"/>
+
 <!--            Gender-->
             <TextView
                 android:layout_width="match_parent"
@@ -69,7 +87,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/blue_app"
                 android:layout_marginBottom="8dp"/>
-            <LinearLayout
+            <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -77,30 +95,30 @@
                     android:padding="14dp">
 
                     <RadioButton
-                        android:id="@+id/bttMale"
+                        android:id="@+id/btnMale"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
-                        android:drawableEnd="@drawable/ic_male"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical"
                         android:text="Macho"
-                        android:textColor="@drawable/bg_text_input_layout"
+                        android:buttonTint="@color/blue_app"
+                        android:textColor="@color/blue_app"
                         />
 
                     <RadioButton
-                        android:id="@+id/bttFamale"
+                        android:id="@+id/btnFamale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:drawableEnd="@drawable/ic_female"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical"
                         android:text="Fêmea"
-                        android:textColor="#003480"/>
-                </LinearLayout>
+                        android:buttonTint="@color/blue_app"
+                        android:textColor="@color/blue_app"/>
+                </RadioGroup>
 
 <!--            Breed-->
             <TextView
@@ -167,35 +185,38 @@
                 android:textSize="16sp"
                 android:textColor="@color/blue_app"
                 android:layout_marginBottom="8dp"/>
-            <LinearLayout
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@drawable/bg_input_text"
-                android:padding="15dp">
+                android:padding="14dp">
 
                 <RadioButton
-                    android:id="@+id/bttPositive"
+                    android:id="@+id/btnYes"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:text="Sim"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:textColor="#003480"/>
+                    android:buttonTint="@color/blue_app"
+                    android:textColor="@color/blue_app"
+                    />
 
                 <RadioButton
-                    android:id="@+id/bttNegative"
+                    android:id="@+id/btnNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:text="Não"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:textColor="#003480"/>
-            </LinearLayout>
+                    android:text="Não"
+                    android:buttonTint="@color/blue_app"
+                    android:textColor="@color/blue_app"/>
+            </RadioGroup>
 
 <!--            Father-->
             <TextView
