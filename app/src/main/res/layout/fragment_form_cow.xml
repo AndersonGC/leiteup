@@ -162,6 +162,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/blue_app"
                 android:layout_marginBottom="8dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/teste"
                 android:layout_width="match_parent"
@@ -228,18 +229,12 @@
                 android:padding="16dp"/>
 
 
-
-
-
-
-
-
-
             <Button
                 android:id="@+id/btnAddCow"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
+                android:layout_gravity="center"
                 android:background="@drawable/bt_gradient"
                 android:text="Cadastrar"
                 android:textColor="@color/white"
