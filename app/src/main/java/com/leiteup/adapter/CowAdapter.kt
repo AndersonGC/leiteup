@@ -1,5 +1,6 @@
 package com.leiteup.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import java.time.LocalDate
 import java.time.Period
 
 class CowAdapter(
+    private val context: Context,
     private val cowList: List<Cow>,
     val cowSelected: (Cow, Int) -> Unit
 ): RecyclerView.Adapter<CowAdapter.MyViewHolder>() {
@@ -31,12 +33,13 @@ class CowAdapter(
         val cow = cowList[position]
 
         // holder.binding.cowImage.setImageDrawable() = cow.cowImage
-        holder.binding.earring.text = cow.earring.toString()
-        holder.binding.breed.text = cow.breed
-        holder.binding.gender.text = cow.gender
+//        holder.binding.earring.text = cow.earring.toString()
+//        holder.binding.breed.text = cow.breed
+//        holder.binding.gender.text = cow.gender
+        holder.binding.gender.text = cow.name
 
-        var yearsOld: Int = Period.between(cow.birthDay, LocalDate.now()).years
-        holder.binding.yearsOld.text = yearsOld.toString()
+//        var yearsOld: Int = Period.between(cow.birthDay, LocalDate.now()).years
+//        holder.binding.yearsOld.text = yearsOld.toString()
 
 
     }

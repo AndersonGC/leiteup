@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_text"
-                android:inputType="number"
+                android:inputType="text"
                 android:padding="16dp"/>
 
 <!--            Gender-->
@@ -88,6 +88,7 @@
                 android:textColor="@color/blue_app"
                 android:layout_marginBottom="8dp"/>
             <RadioGroup
+                    android:id="@+id/rGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -108,7 +109,7 @@
                         />
 
                     <RadioButton
-                        android:id="@+id/btnFamale"
+                        android:id="@+id/btnFemale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -186,6 +187,7 @@
                 android:textColor="@color/blue_app"
                 android:layout_marginBottom="8dp"/>
             <RadioGroup
+                android:id="@+id/isIATF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
