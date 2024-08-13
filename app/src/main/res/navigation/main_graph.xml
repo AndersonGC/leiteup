@@ -66,10 +66,17 @@
         <action
             android:id="@+id/action_cowFragment_to_formCowFragment"
             app:destination="@id/formCowFragment" />
+        <action
+            android:id="@+id/action_cowFragment_to_cowDetailFragment"
+            app:destination="@id/cowDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/formCowFragment"
         android:name="com.leiteup.ui.FormCowFragment"
         android:label="fragment_form_cow"
         tools:layout="@layout/fragment_form_cow" />
+    <fragment
+        android:id="@+id/cowDetailFragment"
+        android:name="com.leiteup.ui.CowDetailFragment"
+        android:label="CowDetailFragment" />
 </navigation>

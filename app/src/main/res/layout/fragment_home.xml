@@ -38,7 +38,7 @@
 
 
         <Button
-            android:id="@+id/btnAddCow"
+            android:id="@+id/btnCow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
