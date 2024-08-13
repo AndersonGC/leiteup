@@ -12,12 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.leiteup.R
 import com.leiteup.adapter.CowAdapter
 import com.leiteup.databinding.FragmentCowBinding
 import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Cow
 import java.lang.Exception
+
 
 class CowFragment : Fragment() {
 
@@ -51,6 +57,7 @@ class CowFragment : Fragment() {
     }
 
     private fun getCows() {
+
         val userId = FirebaseHelper.getIdUser()
         if (userId.isNullOrEmpty()) {
             return

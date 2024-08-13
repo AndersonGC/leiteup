@@ -48,6 +48,7 @@ class FormCowFragment : Fragment() {
     }
 
     private fun validateCow() {
+
         val earring = binding.edtEarring.text.toString().trim().toInt()
         val cowName = binding.edtName.text.toString().trim()
         var cowGender = when (binding.rGender.checkedRadioButtonId) {
@@ -79,7 +80,6 @@ class FormCowFragment : Fragment() {
         cow.mother = mother
 
         Log.i("COW_ERROR", cowName + cow)
-//        cow.earring = earring
 
         saveCow()
     }
