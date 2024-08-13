@@ -1,6 +1,7 @@
 package com.leiteup.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,7 @@ import java.time.Period
 class CowAdapter(
     private val context: Context,
     private val cowList: List<Cow>,
-    val cowSelected: (Cow, Int) -> Unit
+    val cowSelected: (Cow) -> Unit
 ): RecyclerView.Adapter<CowAdapter.MyViewHolder>() {
 
     companion object {
@@ -29,19 +30,20 @@ class CowAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: CowAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val cow = cowList[position]
 
         // holder.binding.cowImage.setImageDrawable() = cow.cowImage
-//        holder.binding.earring.text = cow.earring.toString()
-//        holder.binding.breed.text = cow.breed
-//        holder.binding.gender.text = cow.gender
-        holder.binding.gender.text = cow.name
-
+        holder.binding.earring.text = cow.earring.toString()
+        holder.binding.breed.text = cow.breed
+        holder.binding.gender.text = cow.gender
 //        var yearsOld: Int = Period.between(cow.birthDay, LocalDate.now()).years
 //        holder.binding.yearsOld.text = yearsOld.toString()
 
-
+        holder.itemView.setOnClickListener {
+            cowSelected(cow)
+            Log.d("cliquei", "chamou a funtion " + cow)
+        }
     }
 
     override fun getItemCount() = cowList.size

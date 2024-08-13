@@ -12,6 +12,11 @@ import com.leiteup.R
 import com.leiteup.databinding.FragmentFormCowBinding
 import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Cow
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.util.Locale
 
 class FormCowFragment : Fragment() {
 
@@ -43,22 +48,37 @@ class FormCowFragment : Fragment() {
     }
 
     private fun validateCow() {
+        val earring = binding.edtEarring.text.toString().trim().toInt()
         val cowName = binding.edtName.text.toString().trim()
-//        val earring = binding.edtEarring.text.toString().trim().toInt()
-//        val breed = binding.edtBreed.text.toString().trim()
-//        var cowGender = " "
-//
-//        binding.rGender.setOnCheckedChangeListener{_, id ->
-//            cowGender = when(id) {
-//                R.id.btnMale -> "Male"
-//                else -> "Female"
-//            }
-//        }
-
+        var cowGender = when (binding.rGender.checkedRadioButtonId) {
+            R.id.btnMale -> "Macho"
+            R.id.btnFemale -> "Fêmea"
+            else -> ""
+        }
+        val breed = binding.edtBreed.text.toString().trim()
+        var weight = binding.edtWeight.text.toString().trim().toInt()
+        var birthDayInput = binding.edtDate.text.toString().trim()
+        val inputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        var isIATF = when (binding.isIATF.checkedRadioButtonId) {
+            R.id.btnYes -> true
+            R.id.btnNo -> false
+            else -> true
+        }
+        var father = binding.edtFather.text.toString().trim()
+        var mother = binding.edtMother.text.toString().trim()
 
         if(newCow) cow = Cow()
+        cow.breed = breed
+        cow.earring = earring
+        cow.gender = cowGender
         cow.name = cowName
-        Log.i("COW_ERROR", cowName + cow.name)
+        cow.weight = weight
+//        cow.birthDay = LocalDate.parse(birthDayInput, inputFormat)
+        cow.isIATF = isIATF
+        cow.father = father
+        cow.mother = mother
+
+        Log.i("COW_ERROR", cowName + cow)
 //        cow.earring = earring
 
         saveCow()
