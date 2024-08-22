@@ -4,11 +4,14 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.leiteup.R
 import com.leiteup.databinding.CowAdapterBinding
 import com.leiteup.model.Cow
-import java.time.LocalDate
-import java.time.Period
+import androidx.navigation.fragment.findNavController
+import com.leiteup.ui.CowFragmentDirections
+
 
 class CowAdapter(
     private val context: Context,
@@ -41,7 +44,8 @@ class CowAdapter(
 //        holder.binding.yearsOld.text = yearsOld.toString()
 
         holder.itemView.setOnClickListener {
-            cowSelected(cow)
+            val action = CowFragmentDirections.actionCowFragmentToCowDetail(cow)
+            it.findNavController().navigate(action)
             Log.d("cliquei", "chamou a funtion " + cow)
         }
     }

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
+    id("androidx.navigation.safeargs.kotlin") // Aplica o plugin Safe Args
 }
 
 android {
@@ -54,6 +55,8 @@ dependencies {
     //Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.0")
 
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))

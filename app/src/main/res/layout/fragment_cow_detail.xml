@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.CowDetail">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Animal"
+                    android:textColor="@color/blue_app"
+                    android:textAllCaps="true"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="60dp"
+                android:padding="16dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageDetail"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img"/>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints"
+                android:background="@drawable/bg_input_text"
+                android:layout_marginTop="20dp">
+
+                <!--            Earring-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brinco:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setEarring"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            Name-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nome:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            Gender-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sexo:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setGender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            Breed-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Raça:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setBreed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            Weight-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Peso:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setWeight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            Birth Day-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Data de nascimento:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setBirthDay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            IATF-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IATF:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setIatf"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            Father-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pai:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setFather"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+                <!--            Mother-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mãe:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setMother"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
