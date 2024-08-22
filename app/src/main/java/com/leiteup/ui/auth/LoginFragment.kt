@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.leiteup.R
 import com.leiteup.databinding.FragmentLoginBinding
-import com.leiteup.databinding.FragmentSplashBinding
 import com.leiteup.helper.FirebaseHelper
 
 class LoginFragment : Fragment() {
