@@ -32,6 +32,9 @@ class HomeFragment : Fragment() {
         binding.btnCow.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_cowFragment)
         }
+        binding.btnToMilk.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_milkingFragment)
+        }
     }
 
 //    override fun onDestroyView() {

@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_homeFragment_to_cowFragment"
             app:destination="@id/cowFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_milkingFragment"
+            app:destination="@id/milkingFragment" />
     </fragment>
     <fragment
         android:id="@+id/cowFragment"
@@ -85,5 +88,10 @@
             android:name="cow"
             app:argType="com.leiteup.model.Cow" />
     </fragment>
+    <fragment
+        android:id="@+id/milkingFragment"
+        android:name="com.leiteup.ui.MilkingFragment"
+        android:label="fragment_milking"
+        tools:layout="@layout/fragment_milking" />
 
 </navigation>

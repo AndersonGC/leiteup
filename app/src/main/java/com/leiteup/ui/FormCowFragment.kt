@@ -58,8 +58,11 @@ class FormCowFragment : Fragment() {
         }
         val breed = binding.edtBreed.text.toString().trim()
         var weight = binding.edtWeight.text.toString().trim().toInt()
-        var birthDayInput = binding.edtDate.text.toString().trim()
-        val inputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        var birthDay = binding.edtDate.text.toString().trim()
+        val birthDayFormatter = birthDay.format(formatter)
         var isIATF = when (binding.isIATF.checkedRadioButtonId) {
             R.id.btnYes -> true
             R.id.btnNo -> false
@@ -74,7 +77,7 @@ class FormCowFragment : Fragment() {
         cow.gender = cowGender
         cow.name = cowName
         cow.weight = weight
-//        cow.birthDay = LocalDate.parse(birthDayInput, inputFormat)
+        cow.birthDay = birthDayFormatter
         cow.isIATF = isIATF
         cow.father = father
         cow.mother = mother

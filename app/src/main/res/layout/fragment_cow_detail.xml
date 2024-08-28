@@ -57,6 +57,41 @@
                     android:src="@drawable/img"/>
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/deleteCow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:clickable="true"
+                    android:src="@drawable/ic_delete"
+                    android:layout_marginRight="70dp"
+                    />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/editCow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/green"
+                    android:clickable="true"
+                    android:src="@drawable/ic_edit"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/milkingCow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/blue_app"
+                    android:clickable="true"
+                    android:src="@drawable/ic_milk_white"
+                    android:layout_marginLeft="70dp"
+                    />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -291,6 +326,17 @@
                         android:singleLine="true"/>
                 </LinearLayout>
             </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints"
+            android:background="@drawable/bg_input_text"
+            android:layout_marginTop="20dp">
+
+        </LinearLayout>
         </LinearLayout>
 
 
