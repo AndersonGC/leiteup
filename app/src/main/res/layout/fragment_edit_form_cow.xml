@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.EditFormCowFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Editar animal"
+                    android:textColor="@color/blue_app"
+                    android:textAllCaps="true"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <!--            Earring-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="Brinco:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtEarring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="number"
+                android:padding="16dp"/>
+
+            <!--            Name-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Nome:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="text"
+                android:padding="16dp"/>
+
+            <!--            Gender-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Sexo:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <RadioGroup
+                android:id="@+id/rGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_input_text"
+                android:padding="14dp">
+
+                <RadioButton
+                    android:id="@+id/btnMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="Macho"
+                    android:buttonTint="@color/blue_app"
+                    android:textColor="@color/blue_app"
+                    />
+
+                <RadioButton
+                    android:id="@+id/btnFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="Fêmea"
+                    android:buttonTint="@color/blue_app"
+                    android:textColor="@color/blue_app"/>
+            </RadioGroup>
+
+            <!--            Breed-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Raça:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtBreed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:padding="16dp"/>
+
+            <!--            Weight-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Peso:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+
+            <!--            Birth Day-->
+            <EditText
+                android:id="@+id/edtWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="number"
+                android:padding="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Data de nascimento:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:inputType="date"
+                android:hint="DD/MM/AAAA"
+                android:textColorHint="@color/color_default"
+                android:padding="16dp"/>
+
+            <!--            IATF-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Nascido de IATF:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <RadioGroup
+                android:id="@+id/isIATF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_input_text"
+                android:padding="14dp">
+
+                <RadioButton
+                    android:id="@+id/btnYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="Sim"
+                    android:buttonTint="@color/blue_app"
+                    android:textColor="@color/blue_app"
+                    />
+
+                <RadioButton
+                    android:id="@+id/btnNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="Não"
+                    android:buttonTint="@color/blue_app"
+                    android:textColor="@color/blue_app"/>
+            </RadioGroup>
+
+            <!--            Father-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Pai:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtFather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:padding="16dp"/>
+
+            <!--            Mother-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Mãe:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <EditText
+                android:id="@+id/edtMother"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_text"
+                android:padding="16dp"/>
+
+            <!--            Cadastrar-->
+            <Button
+                android:id="@+id/btnAddCow"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bt_gradient"
+                android:text="Editar"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:indeterminateTint="@color/blue_app"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
