@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.google.firebase.database.IgnoreExtraProperties
 import com.leiteup.helper.FirebaseHelper
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
 
 @Parcelize
 @IgnoreExtraProperties
@@ -16,6 +15,10 @@ data class Milking(
     var id: String = ""
 ) : Parcelable {
     init {
-        this.id = FirebaseHelper.getDatabase().push().key ?: ""
+        if (id.isEmpty()) {
+            this.id = FirebaseHelper.getDatabase().push().key ?: ""
+        }
     }
 }
+
+

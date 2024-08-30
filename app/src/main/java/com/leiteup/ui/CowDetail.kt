@@ -38,19 +38,28 @@ class CowDetail : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Cow>("updatedCow")
+            ?.observe(viewLifecycleOwner) { updatedCow ->
+                cow = updatedCow
+                updateUI()
+            }
 
-        view.findViewById<TextView>(R.id.setEarring).text = cow.earring.toString()
-        view.findViewById<TextView>(R.id.setName).text = cow.name
-        view.findViewById<TextView>(R.id.setGender).text = cow.gender
-        view.findViewById<TextView>(R.id.setBreed).text = cow.breed
-        view.findViewById<TextView>(R.id.setWeight).text = cow.weight.toString() + " Kilos"
-        view.findViewById<TextView>(R.id.setBirthDay).text = cow.birthDay
-        view.findViewById<TextView>(R.id.setIatf).text = if (cow.isIATF) "Sim" else "Não"
-        view.findViewById<TextView>(R.id.setFather).text = cow.father
-        view.findViewById<TextView>(R.id.setMother).text = cow.mother
-
+        updateUI()
         initClicks()
        // fetchMilkData()
+    }
+
+    private fun updateUI() {
+
+        view?.findViewById<TextView>(R.id.setEarring)?.text = cow.earring.toString()
+        view?.findViewById<TextView>(R.id.setName)?.text = cow.name
+        view?.findViewById<TextView>(R.id.setGender)?.text = cow.gender
+        view?.findViewById<TextView>(R.id.setBreed)?.text = cow.breed
+        view?.findViewById<TextView>(R.id.setWeight)?.text = cow.weight.toString() + " Kilos"
+        view?.findViewById<TextView>(R.id.setBirthDay)?.text = cow.birthDay
+        view?.findViewById<TextView>(R.id.setIatf)?.text = if (cow.isIATF) "Sim" else "Não"
+        view?.findViewById<TextView>(R.id.setFather)?.text = cow.father
+        view?.findViewById<TextView>(R.id.setMother)?.text = cow.mother
     }
 
     private fun initClicks() {
@@ -58,6 +67,17 @@ class CowDetail : Fragment() {
             // Confirmação de exclusão
             showDeleteConfirmationDialog()
         }
+
+        view?.findViewById<FloatingActionButton>(R.id.editCow)?.setOnClickListener {
+            val action = CowDetailDirections.actionCowDetailToEditFormCowFragment(cow)
+            findNavController().navigate(action)
+        }
+
+        view?.findViewById<FloatingActionButton>(R.id.milkingCow)?.setOnClickListener {
+            val action = CowDetailDirections.actionCowDetailToMilkingList(cow)
+            findNavController().navigate(action)
+        }
+
     }
 
     private fun showDeleteConfirmationDialog() {

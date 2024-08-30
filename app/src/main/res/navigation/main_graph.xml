@@ -87,11 +87,35 @@
         <argument
             android:name="cow"
             app:argType="com.leiteup.model.Cow" />
+        <action
+            android:id="@+id/action_cowDetail_to_editFormCowFragment"
+            app:destination="@id/editFormCowFragment" />
+        <action
+            android:id="@+id/action_cowDetail_to_milkingList"
+            app:destination="@id/milkingList" />
     </fragment>
     <fragment
         android:id="@+id/milkingFragment"
         android:name="com.leiteup.ui.MilkingFragment"
         android:label="fragment_milking"
         tools:layout="@layout/fragment_milking" />
+    <fragment
+        android:id="@+id/editFormCowFragment"
+        android:name="com.leiteup.ui.EditFormCowFragment"
+        android:label="fragment_edit_form_cow"
+        tools:layout="@layout/fragment_edit_form_cow" >
+        <argument
+            android:name="cow"
+            app:argType="com.leiteup.model.Cow" />
+    </fragment>
+    <fragment
+        android:id="@+id/milkingList"
+        android:name="com.leiteup.ui.MilkingList"
+        android:label="fragment_milking_list"
+        tools:layout="@layout/fragment_milking_list" >
+        <argument
+            android:name="cow"
+            app:argType="com.leiteup.model.Cow" />
+    </fragment>
 
 </navigation>

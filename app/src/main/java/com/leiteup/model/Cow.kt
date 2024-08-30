@@ -21,6 +21,8 @@ data class Cow(
     var birthDay: String = "",
 ) : Parcelable {
     init {
-        this.id = FirebaseHelper.getDatabase().push().key ?: ""
+        if (id.isEmpty()) {
+            this.id = FirebaseHelper.getDatabase().push().key ?: ""
+        }
     }
 }
