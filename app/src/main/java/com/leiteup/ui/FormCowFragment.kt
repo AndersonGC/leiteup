@@ -2,21 +2,17 @@ package com.leiteup.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.leiteup.R
 import com.leiteup.databinding.FragmentFormCowBinding
 import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Cow
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
-import java.util.Locale
 
 class FormCowFragment : Fragment() {
 
@@ -50,7 +46,7 @@ class FormCowFragment : Fragment() {
     private fun validateCow() {
 
         val earring = binding.edtEarring.text.toString().trim().toInt()
-        val cowName = binding.edtName.text.toString().trim()
+        val cowName = binding.edtName.text.toString().trim().uppercase()
         var cowGender = when (binding.rGender.checkedRadioButtonId) {
             R.id.btnMale -> "Macho"
             R.id.btnFemale -> "Fêmea"

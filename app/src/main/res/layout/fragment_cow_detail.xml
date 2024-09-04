@@ -150,6 +150,31 @@
                         android:ellipsize="end"
                         android:singleLine="true"/>
                 </LinearLayout>
+                <!--            Milk-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Produção:"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/setMilk"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"/>
+                </LinearLayout>
                 <!--            Gender-->
                 <LinearLayout
                     android:layout_width="match_parent"

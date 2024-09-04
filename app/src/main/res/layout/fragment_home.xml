@@ -72,6 +72,23 @@
             android:textSize="18dp" />
 
         <Button
+            android:id="@+id/btnFood"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bt_homepage"
+            android:drawableLeft="@drawable/ic_wheat"
+            android:drawablePadding="15dp"
+            android:drawableRight="@drawable/ic_arrow"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:text="Dieta Regulada"
+            android:textAllCaps="false"
+            android:textColor="@color/gray"
+            android:textSize="18dp" />
+
+        <Button
             android:id="@+id/btnReports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
