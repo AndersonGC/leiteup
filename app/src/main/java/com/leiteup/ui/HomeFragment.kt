@@ -1,10 +1,10 @@
 package com.leiteup.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.leiteup.R
 import com.leiteup.databinding.FragmentHomeBinding
@@ -35,11 +35,14 @@ class HomeFragment : Fragment() {
         binding.btnToMilk.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_milkingFragment)
         }
+        binding.btnFood.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_foodListFragment)
+        }
     }
 
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

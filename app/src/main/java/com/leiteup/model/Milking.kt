@@ -8,10 +8,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @IgnoreExtraProperties
 data class Milking(
-    var cowEarring: Int = 0,
-    var date: String = "", // Usando String para simplificar as consultas
+    var cowName: String = "",
+    var date: String = "",
+    var dateTimestamp: Long = 0L,
     var quantity: Double = 0.0,
-    var milkingNumber: Int = 0, // Número da ordenha (1, 2, 3)
+    var milkingNumber: Int = 0,
     var id: String = ""
 ) : Parcelable {
     init {
