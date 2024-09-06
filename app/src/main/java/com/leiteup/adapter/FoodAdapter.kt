@@ -27,7 +27,7 @@ class FoodAdapter(
         val (cow, adjustedAverage) = foodList[position]
 
         holder.binding.cowName.text = cow.name
-        holder.binding.food.text = adjustedAverage.toString()
+        holder.binding.food.text = adjustedAverage.toString().take(4) + " Kgs"
 
     }
 
