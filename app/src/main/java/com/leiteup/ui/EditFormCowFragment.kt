@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.leiteup.R
+import com.leiteup.controller.CowController
 import com.leiteup.databinding.FragmentEditFormCowBinding
-import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Cow
 import java.time.format.DateTimeFormatter
 
@@ -22,6 +20,8 @@ class EditFormCowFragment : Fragment() {
     private var _binding: FragmentEditFormCowBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var cowController: CowController
+
     private lateinit var cow: Cow
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +29,7 @@ class EditFormCowFragment : Fragment() {
         arguments?.let {
             cow = EditFormCowFragmentArgs.fromBundle(it).cow
         }
+        cowController = CowController()
     }
 
     override fun onCreateView(
@@ -43,27 +44,32 @@ class EditFormCowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<TextView>(R.id.edtEarring).text = cow.earring.toString()
-        view.findViewById<TextView>(R.id.edtName).text = cow.name
-        if(cow.gender == "Macho") {
-            view.findViewById<RadioButton>(R.id.btnMale).isChecked = true
-        } else {
-            view.findViewById<RadioButton>(R.id.btnFemale).isChecked = true
-        }
-        view.findViewById<TextView>(R.id.edtBreed).text = cow.breed
-
-        view.findViewById<TextView>(R.id.edtWeight).text = cow.weight.toString()
-        view.findViewById<TextView>(R.id.edtDate).text = cow.birthDay
-        if(cow.isIATF) {
-            view.findViewById<RadioButton>(R.id.btnYes).isChecked = true
-        } else {
-            view.findViewById<RadioButton>(R.id.btnNo).isChecked = true
-        }
-        view.findViewById<TextView>(R.id.edtFather).text = cow.father
-        view.findViewById<TextView>(R.id.edtMother).text = cow.mother
-
+        fillFormWithCowData()
         initClicks()
     }
+
+    private fun fillFormWithCowData() {
+
+        binding.edtEarring.setText(cow.earring.toString())
+        binding.edtName.setText(cow.name)
+        binding.edtBreed.setText(cow.breed)
+        binding.edtWeight.setText(cow.weight.toString())
+        binding.edtDate.setText(cow.birthDay)
+        binding.edtFather.setText(cow.father)
+        binding.edtMother.setText(cow.mother)
+
+        when (cow.gender) {
+            "Macho" -> binding.btnMale.isChecked = true
+            else -> binding.btnFemale.isChecked = true
+        }
+
+        if (cow.isIATF) {
+            binding.btnYes.isChecked = true
+        } else {
+            binding.btnNo.isChecked = true
+        }
+    }
+
 
     private fun initClicks() {
         view?.findViewById<Button>(R.id.btnAddCow)?.setOnClickListener {
@@ -73,7 +79,7 @@ class EditFormCowFragment : Fragment() {
 
     private fun validadeCow() {
         val newEarring = binding.edtEarring.text.toString().trim().toInt()
-        val newName = binding.edtName.text.toString().trim()
+        val newName = binding.edtName.text.toString().trim().uppercase()
         var newGender = when (binding.rGender.checkedRadioButtonId) {
             R.id.btnMale -> "Macho"
             R.id.btnFemale -> "Fêmea"
@@ -106,31 +112,50 @@ class EditFormCowFragment : Fragment() {
             father = newFather,
             mother = newMother
         )
-        updateCow(updatedCow)
+//        cowController.updateCow(updatedCow, onSuccess = {
+//            findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
+//            findNavController().popBackStack()
+//            Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
+//        }, onError = { errorMessage ->
+//            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+//        })
+        cowController.updateCowAndMilkings(
+            oldCowName = cow.name,
+            updatedCow = updatedCow, // O objeto Cow atualizado
+            onSuccess = {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
+            findNavController().popBackStack()
+            Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
+            },
+            onError = { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        )
+//        updateCow(updatedCow)
     }
 
-    private fun updateCow(updatedCow: Cow) {
-        FirebaseHelper
-            .getDatabase()
-            .child("cow")
-            .child(FirebaseHelper.getIdUser() ?: " ")
-            .child(updatedCow.id)
-            .setValue(updatedCow)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
-                    findNavController().popBackStack()
-                    Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
-                    Log.e("COW_ID", "ID UPDATE" + updatedCow.id)
-                } else {
-                    Log.e("COW_ERROR", "Erro ao atualizar animal: ${task.exception?.message}")
-                    Toast.makeText(requireContext(), "Erro ao atualizar animal.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener {
-                Log.e("COW_ERROR", "Erro ao atualizar animal: ${it.message}")
-                Toast.makeText(requireContext(), "Erro ao atualizar animal.", Toast.LENGTH_SHORT).show()
-            }
-    }
+//    private fun updateCow(updatedCow: Cow) {
+//        FirebaseHelper
+//            .getDatabase()
+//            .child("cow")
+//            .child(FirebaseHelper.getIdUser() ?: " ")
+//            .child(updatedCow.id)
+//            .setValue(updatedCow)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
+//                    findNavController().popBackStack()
+//                    Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
+//                    Log.e("COW_ID", "ID UPDATE" + updatedCow.id)
+//                } else {
+//                    Log.e("COW_ERROR", "Erro ao atualizar animal: ${task.exception?.message}")
+//                    Toast.makeText(requireContext(), "Erro ao atualizar animal.", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//            .addOnFailureListener {
+//                Log.e("COW_ERROR", "Erro ao atualizar animal: ${it.message}")
+//                Toast.makeText(requireContext(), "Erro ao atualizar animal.", Toast.LENGTH_SHORT).show()
+//            }
+//    }
 
 }

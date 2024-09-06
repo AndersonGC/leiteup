@@ -119,11 +119,22 @@
         <argument
             android:name="cow"
             app:argType="com.leiteup.model.Cow" />
+        <action
+            android:id="@+id/action_milkingList_to_editFormMilkFragment"
+            app:destination="@id/editFormMilkFragment" />
     </fragment>
     <fragment
         android:id="@+id/foodListFragment"
         android:name="com.leiteup.ui.FoodListFragment"
         android:label="fragment_food_list"
         tools:layout="@layout/fragment_food_list" />
+    <fragment
+        android:id="@+id/editFormMilkFragment"
+        android:name="com.leiteup.ui.EditFormMilkFragment"
+        android:label="EditFormMilkFragment" >
+        <argument
+            android:name="milking"
+            app:argType="com.leiteup.model.Milking" />
+    </fragment>
 
 </navigation>

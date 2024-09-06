@@ -1,15 +1,12 @@
 package com.leiteup.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.leiteup.R
 import com.leiteup.databinding.CowAdapterBinding
 import com.leiteup.model.Cow
-import androidx.navigation.fragment.findNavController
 import com.leiteup.ui.CowFragmentDirections
 
 
@@ -46,7 +43,6 @@ class CowAdapter(
         holder.itemView.setOnClickListener {
             val action = CowFragmentDirections.actionCowFragmentToCowDetail(cow)
             it.findNavController().navigate(action)
-            Log.d("cliquei", "chamou a funtion " + cow)
         }
     }
 

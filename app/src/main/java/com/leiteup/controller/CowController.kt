@@ -3,11 +3,111 @@ package com.leiteup.controller
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Cow
+import com.leiteup.model.Milking
 
 class CowController (private val onCowsReceived: (List<Cow>) -> Unit = {}, private val onError: (String) -> Unit = {}) {
+
+//    fun updateCow(updatedCow: Cow, onSuccess: () -> Unit, onError: (String) -> Unit) {
+//        val databaseReference: DatabaseReference = FirebaseHelper.getDatabase()
+//            .child("cow")
+//            .child(FirebaseHelper.getIdUser() ?: "")
+//
+//        databaseReference
+//            .child(updatedCow.id)
+//            .setValue(updatedCow)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    Log.d("COW_UPDATE", "Animal atualizado com sucesso.")
+//                    onSuccess()
+//                } else {
+//                    Log.e("COW_UPDATE", "Erro ao atualizar animal: ${task.exception?.message}")
+//                    onError("Erro ao atualizar o animal.")
+//                }
+//            }
+//            .addOnFailureListener { e ->
+//                Log.e("COW_UPDATE", "Erro ao atualizar animal: ${e.message}")
+//                onError(e.message ?: "Erro desconhecido ao atualizar o animal.")
+//            }
+//    }
+
+    fun updateCowAndMilkings(
+        oldCowName: String,
+        updatedCow: Cow,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val databaseReference: DatabaseReference = FirebaseHelper.getDatabase()
+            .child("cow")
+            .child(FirebaseHelper.getIdUser() ?: "")
+
+        // Atualiza a vaca
+        databaseReference.child(updatedCow.id).setValue(updatedCow)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("COW_UPDATE", "Animal atualizado com sucesso.")
+
+                    // Verifica se o nome foi alterado
+                    if (oldCowName != updatedCow.name) {
+                        // Nome da vaca foi alterado, agora atualiza os milkings
+                        updateMilkingsWithNewCowName(oldCowName, updatedCow.name, onSuccess, onError)
+                    } else {
+                        onSuccess() // Se o nome não foi alterado, apenas completa a operação
+                    }
+                } else {
+                    Log.e("COW_UPDATE", "Erro ao atualizar animal: ${task.exception?.message}")
+                    onError("Erro ao atualizar o animal.")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("COW_UPDATE", "Erro ao atualizar animal: ${e.message}")
+                onError(e.message ?: "Erro desconhecido ao atualizar o animal.")
+            }
+    }
+
+    private fun updateMilkingsWithNewCowName(
+        oldCowName: String,
+        newCowName: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val milkingReference = FirebaseHelper.getDatabase().child("milkings")
+
+        // Busca todas as ordenhas vinculadas ao nome antigo da vaca
+        milkingReference.orderByChild("cowName").equalTo(oldCowName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Itera sobre todas as ordenhas encontradas e atualiza o nome da vaca
+                        for (childSnapshot in dataSnapshot.children) {
+                            val milking = childSnapshot.getValue(Milking::class.java)
+                            if (milking != null) {
+                                // Atualiza o nome da vaca na ordenha
+                                milking.cowName = newCowName
+
+                                // Salva a ordenha atualizada no banco de dados
+                                milkingReference.child(milking.id).setValue(milking)
+                                    .addOnFailureListener {
+                                        Log.e("MILKING_UPDATE", "Erro ao atualizar ordenha: ${it.message}")
+                                    }
+                            }
+                        }
+                        onSuccess() // Conclui a operação após todas as ordenhas terem sido atualizadas
+                    } else {
+                        Log.d("MILKING_UPDATE", "Nenhuma ordenha encontrada para o nome da vaca: $oldCowName")
+                        onSuccess() // Conclui a operação mesmo que não haja ordenhas para atualizar
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("MILKING_UPDATE", "Falha ao ler ordenhas: ${databaseError.toException()}")
+                    onError("Falha ao ler as ordenhas.")
+                }
+            })
+    }
 
     fun fetchCows(userId: String) {
         val cowReference = FirebaseHelper.getDatabase().child("cow").child(userId)
