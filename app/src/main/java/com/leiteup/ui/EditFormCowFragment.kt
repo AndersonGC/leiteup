@@ -36,7 +36,6 @@ class EditFormCowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentEditFormCowBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -100,6 +99,7 @@ class EditFormCowFragment : Fragment() {
         var newFather = binding.edtFather.text.toString().trim()
         var newMother = binding.edtMother.text.toString().trim()
         Log.e("COW_ID", "ID COW" + cow.id)
+
         val updatedCow = Cow(
             id = cow.id,
             earring = newEarring,
@@ -112,13 +112,7 @@ class EditFormCowFragment : Fragment() {
             father = newFather,
             mother = newMother
         )
-//        cowController.updateCow(updatedCow, onSuccess = {
-//            findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
-//            findNavController().popBackStack()
-//            Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
-//        }, onError = { errorMessage ->
-//            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-//        })
+
         cowController.updateCowAndMilkings(
             oldCowName = cow.name,
             updatedCow = updatedCow, // O objeto Cow atualizado
@@ -131,31 +125,10 @@ class EditFormCowFragment : Fragment() {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
             }
         )
-//        updateCow(updatedCow)
     }
 
-//    private fun updateCow(updatedCow: Cow) {
-//        FirebaseHelper
-//            .getDatabase()
-//            .child("cow")
-//            .child(FirebaseHelper.getIdUser() ?: " ")
-//            .child(updatedCow.id)
-//            .setValue(updatedCow)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
-//                    findNavController().popBackStack()
-//                    Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
-//                    Log.e("COW_ID", "ID UPDATE" + updatedCow.id)
-//                } else {
-//                    Log.e("COW_ERROR", "Erro ao atualizar animal: ${task.exception?.message}")
-//                    Toast.makeText(requireContext(), "Erro ao atualizar animal.", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            .addOnFailureListener {
-//                Log.e("COW_ERROR", "Erro ao atualizar animal: ${it.message}")
-//                Toast.makeText(requireContext(), "Erro ao atualizar animal.", Toast.LENGTH_SHORT).show()
-//            }
-//    }
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

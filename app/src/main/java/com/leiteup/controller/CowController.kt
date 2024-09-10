@@ -139,6 +139,27 @@ class CowController (private val onCowsReceived: (List<Cow>) -> Unit = {}, priva
         })
     }
 
+    fun cowExists(cowName: String, onResult: (Boolean) -> Unit, onError: (String) -> Unit) {
+        val cowReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
+
+        cowReference.orderByChild("name").equalTo(cowName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        onResult(true)
+                    } else {
+                        onResult(false)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("COW_CHECK", "Falha ao verificar a vaca: ${databaseError.toException()}")
+                    onError("Falha ao verificar a vaca: ${databaseError.message}")
+                }
+            })
+    }
+
+
     fun calculateFood(userId: String, onResult: (List<Pair<Cow, Double>>) -> Unit, onError: (String) -> Unit) {
         val cowReference = FirebaseHelper.getDatabase().child("cow").child(userId)
 
