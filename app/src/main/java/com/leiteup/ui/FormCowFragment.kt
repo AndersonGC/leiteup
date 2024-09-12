@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.leiteup.R
+import com.leiteup.controller.CowController
 import com.leiteup.databinding.FragmentFormCowBinding
-import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Cow
 import java.time.format.DateTimeFormatter
 
@@ -21,6 +21,8 @@ class FormCowFragment : Fragment() {
 
     private lateinit var cow: Cow
     private var newCow: Boolean = true
+
+    private var cowController = CowController()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +39,7 @@ class FormCowFragment : Fragment() {
     }
 
     private fun initListeners() {
-
         binding.btnAddCow.setOnClickListener() { validateCow() }
-
-
     }
 
     private fun validateCow() {
@@ -80,30 +79,12 @@ class FormCowFragment : Fragment() {
 
         Log.i("COW_ERROR", cowName + cow)
 
-        saveCow()
-    }
-
-    private fun saveCow() {
-        FirebaseHelper
-            .getDatabase()
-            .child("cow")
-            .child(FirebaseHelper.getIdUser() ?: " ")
-            .child(cow.id)
-            .setValue(cow)
-            .addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                    if(newCow) {
-                        findNavController().popBackStack()
-                        Log.i("COW_ERROR", "CowSucesso: ${task.exception?.message}")
-                        Toast.makeText(requireContext(), "Animal salvo com sucesso.", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Log.i("COW_ERROR", "CowErro1: ${task.exception?.message}")
-                    Toast.makeText(requireContext(), "Erro ao salvar animal1.", Toast.LENGTH_SHORT).show()
-                }
-            }.addOnFailureListener {
-                Toast.makeText(requireContext(), "Erro ao salvar animal2.", Toast.LENGTH_SHORT).show()
-            }
+        cowController.saveCow(cow, newCow, {
+            findNavController().popBackStack()
+            Toast.makeText(requireContext(), "Animal salvo com sucesso.", Toast.LENGTH_SHORT).show()
+        }, { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun onDestroyView() {

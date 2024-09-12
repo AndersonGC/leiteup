@@ -1,5 +1,6 @@
 package com.leiteup.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import com.leiteup.ui.CowFragmentDirections
 
 class CowAdapter(
     private val context: Context,
-    private val cowList: List<Cow>,
+    private var cowList: List<Cow>,
     val cowSelected: (Cow) -> Unit
 ): RecyclerView.Adapter<CowAdapter.MyViewHolder>() {
 
@@ -50,4 +51,10 @@ class CowAdapter(
 
     inner class MyViewHolder(val binding: CowAdapterBinding) :
             RecyclerView.ViewHolder(binding.root)
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newCowList: List<Cow>) {
+        cowList = newCowList
+        notifyDataSetChanged()
+    }
 }

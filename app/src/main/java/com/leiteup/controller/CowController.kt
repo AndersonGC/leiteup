@@ -33,6 +33,43 @@ class CowController (private val onCowsReceived: (List<Cow>) -> Unit = {}, priva
 //                onError(e.message ?: "Erro desconhecido ao atualizar o animal.")
 //            }
 //    }
+fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    val cowReference: DatabaseReference = FirebaseHelper
+        .getDatabase()
+        .child("cow")
+        .child(FirebaseHelper.getIdUser() ?: "")
+        .child(cow.id)
+
+    cowReference.setValue(cow)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onSuccess()
+            } else {
+                onError("Erro ao salvar animal: ${task.exception?.message}")
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError("Erro ao salvar animal: ${exception.message}")
+        }
+    }
+
+    fun deleteCow(cowId: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val cowReference = FirebaseHelper.getDatabase()
+            .child("cow")
+            .child(FirebaseHelper.getIdUser() ?: " ")
+            .child(cowId)
+
+        cowReference.removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onSuccess()
+            } else {
+                onError("Erro ao deletar animal.")
+            }
+        }
+        .addOnFailureListener {
+            Log.e("COW_ERROR", "Erro ao deletar animal: ${it.message}")
+        }
+    }
 
     fun updateCowAndMilkings(
         oldCowName: String,

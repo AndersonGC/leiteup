@@ -2,7 +2,6 @@ package com.leiteup.controller
 
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
-
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.leiteup.helper.FirebaseHelper
@@ -13,6 +12,120 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Unit = {}, private val onError: (String) -> Unit = {}) {
+
+    fun validateAndSaveMilking(cowName: String, quantity: Double, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val instantDate = LocalDate.now().format(formatter)
+
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateTimestamp = dateFormat.parse(instantDate)?.time ?: 0L
+
+        FirebaseHelper.getDatabase()
+            .child("milkings")
+            .orderByChild("cowName")
+            .equalTo(cowName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val existingMilkings = snapshot.children.mapNotNull { it.getValue(Milking::class.java) }
+                        .filter { it.date == instantDate }
+
+                    when (existingMilkings.size) {
+                        0 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 1, onSuccess, onError)
+                        1 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 2, onSuccess, onError)
+                        2 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 3, onSuccess, onError)
+                        else -> onError("Não é permitido registrar mais de três ordenhas para a mesma data.")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onError("Erro ao consultar o banco de dados.")
+                }
+            })
+    }
+
+    private fun saveMilking(cowName: String, quantity: Double, instantDate: String, dateTimestamp: Long, milkingNumber: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val milking = Milking(
+            cowName = cowName,
+            quantity = quantity,
+            date = instantDate,
+            dateTimestamp = dateTimestamp,
+            milkingNumber = milkingNumber
+        )
+
+        FirebaseHelper.getDatabase()
+            .child("milkings")
+            .child(milking.id)
+            .setValue(milking)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onError("Erro ao salvar ordenha.")
+                }
+            }
+    }
+
+    fun updateMilking(milkingId: String, newCowName: String, newQuantity: Double, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        // Obtém a referência do Firebase para a ordenha com o ID fornecido
+        val milkingReference = FirebaseHelper.getDatabase()
+            .child("milkings")
+            .child(milkingId)
+
+        // Verifica se a ordenha existe
+        milkingReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Ordenha encontrada, agora atualizamos os valores
+                    val updates = mapOf<String, Any>(
+                        "cowName" to newCowName,
+                        "quantity" to newQuantity
+                    )
+
+                    // Atualiza os dados da ordenha no Firebase
+                    milkingReference.updateChildren(updates).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            onSuccess() // Chama o callback de sucesso
+                        } else {
+                            onError("Erro ao atualizar a ordenha.")
+                        }
+                    }
+                } else {
+                    onError("Ordenha não encontrada para o ID: $milkingId")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onError("Erro ao consultar o banco de dados.")
+            }
+        })
+    }
+
+    fun deleteMilking(milkingId: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val milkingReference = FirebaseHelper.getDatabase()
+            .child("milkings")
+            .child(milkingId)
+
+        milkingReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Ordenha encontrada, agora deletamos
+                    milkingReference.removeValue().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            onSuccess() // Chama o callback de sucesso
+                        } else {
+                            onError("Erro ao deletar a ordenha.")
+                        }
+                    }
+                } else {
+                    onError("Ordenha não encontrada para o ID: $milkingId")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onError("Erro ao consultar o banco de dados.")
+            }
+        })
+    }
 
     fun fetchMilkingsWithCowName(cowName: String) {
         val milkingsReference = FirebaseHelper.getDatabase().child("milkings")
@@ -85,58 +198,5 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
             })
     }
 
-
-
-    fun validateAndSaveMilking(cowName: String, quantity: Double, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val instantDate = LocalDate.now().format(formatter)
-
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val dateTimestamp = dateFormat.parse(instantDate)?.time ?: 0L
-
-        FirebaseHelper.getDatabase()
-            .child("milkings")
-            .orderByChild("cowName")
-            .equalTo(cowName)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val existingMilkings = snapshot.children.mapNotNull { it.getValue(Milking::class.java) }
-                        .filter { it.date == instantDate }
-
-                    when (existingMilkings.size) {
-                        0 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 1, onSuccess, onError)
-                        1 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 2, onSuccess, onError)
-                        2 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 3, onSuccess, onError)
-                        else -> onError("Não é permitido registrar mais de três ordenhas para a mesma data.")
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    onError("Erro ao consultar o banco de dados.")
-                }
-            })
-    }
-
-    private fun saveMilking(cowName: String, quantity: Double, instantDate: String, dateTimestamp: Long, milkingNumber: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        val milking = Milking(
-            cowName = cowName,
-            quantity = quantity,
-            date = instantDate,
-            dateTimestamp = dateTimestamp,
-            milkingNumber = milkingNumber
-        )
-
-        FirebaseHelper.getDatabase()
-            .child("milkings")
-            .child(milking.id)
-            .setValue(milking)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onSuccess()
-                } else {
-                    onError("Erro ao salvar ordenha.")
-                }
-            }
-    }
 
 }

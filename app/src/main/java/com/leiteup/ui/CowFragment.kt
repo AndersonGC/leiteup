@@ -1,6 +1,8 @@
 package com.leiteup.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,13 +25,13 @@ class CowFragment : Fragment() {
 
     private lateinit var cowAdapter: CowAdapter
     private val cowList = mutableListOf<Cow>()
+    private val filteredCowList = mutableListOf<Cow>()
     private lateinit var cowController: CowController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentCowBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -59,6 +61,10 @@ class CowFragment : Fragment() {
         binding.fabAddCow.setOnClickListener {
             findNavController().navigate(R.id.action_cowFragment_to_formCowFragment)
         }
+
+        binding.btnSearch.setOnClickListener {
+            filterCows()
+        }
     }
 
     private fun fetchCows() {
@@ -69,6 +75,25 @@ class CowFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun filterCows() {
+        val searchText = binding.edtSearch.text.toString().trim().uppercase()
+        filteredCowList.clear()
+        if (searchText.isEmpty()) {
+            filteredCowList.addAll(cowList)
+            Log.i("COW_SEARCH", "SEARCH" + cowList)
+        } else {
+            for (cow in cowList) {
+                if (cow.name.uppercase().contains(searchText)) {
+                    filteredCowList.add(cow)
+                }
+            }
+        }
+        binding.edtSearch.setText("")
+        cowAdapter.updateList(filteredCowList)
+        cowAdapter.notifyDataSetChanged()
     }
 
     private fun initAdapter() {
@@ -83,7 +108,6 @@ class CowFragment : Fragment() {
         }
         binding.cowList.adapter = cowAdapter
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
