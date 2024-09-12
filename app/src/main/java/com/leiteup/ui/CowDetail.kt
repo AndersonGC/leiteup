@@ -12,15 +12,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leiteup.R
+import com.leiteup.controller.CowController
 import com.leiteup.controller.MilkingController
-import com.leiteup.helper.FirebaseHelper
+import com.leiteup.databinding.FragmentCowDetailBinding
 import com.leiteup.model.Cow
 
 class CowDetail : Fragment() {
 
+    private var _binding: FragmentCowDetailBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var cow: Cow
 
     private lateinit var milkingController: MilkingController
+    private lateinit var cowController: CowController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +33,15 @@ class CowDetail : Fragment() {
             cow = CowDetailArgs.fromBundle(it).cow
         }
         milkingController = MilkingController()
+        cowController = CowController()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_cow_detail, container, false)
+    ): View {
+        _binding = FragmentCowDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +55,6 @@ class CowDetail : Fragment() {
 
         updateUI()
         initClicks()
-       // fetchMilkData()
     }
 
     private fun updateUI() {
@@ -97,31 +103,23 @@ class CowDetail : Fragment() {
             .setTitle("Excluir Animal")
             .setMessage("Tem certeza que deseja excluir este animal?")
             .setPositiveButton("Sim") { _, _ ->
-                deleteCow()
+                cowController.deleteCow(
+                    cow.id,
+                    onSuccess = {
+                        findNavController().popBackStack()
+                        Toast.makeText(requireContext(), "Animal deletado com sucesso", Toast.LENGTH_SHORT).show()
+                    },
+                    onError = { errorMessage ->
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
             .setNegativeButton("Não", null)
             .show()
     }
 
-    private fun deleteCow() {
-        FirebaseHelper
-            .getDatabase()
-            .child("cow")
-            .child(FirebaseHelper.getIdUser() ?: " ")
-            .child(cow.id)
-            .removeValue()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    findNavController().popBackStack()
-                    Toast.makeText(requireContext(), "Animal deletado com sucesso.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Log.e("COW_ERROR", "Erro ao deletar animal: ${task.exception?.message}")
-                    Toast.makeText(requireContext(), "Erro ao deletar animal.", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener {
-                Log.e("COW_ERROR", "Erro ao deletar animal: ${it.message}")
-                Toast.makeText(requireContext(), "Erro ao deletar animal.", Toast.LENGTH_SHORT).show()
-            }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

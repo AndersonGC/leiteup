@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.leiteup.controller.CowController
 import com.leiteup.controller.MilkingController
 import com.leiteup.databinding.FragmentMilkingBinding
 
@@ -16,10 +17,12 @@ class MilkingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var milkingController: MilkingController
+    private lateinit var cowController: CowController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         milkingController = MilkingController()
+        cowController = CowController()
     }
 
     override fun onCreateView(
@@ -41,27 +44,40 @@ class MilkingFragment : Fragment() {
         binding.btnAddMilking.setOnClickListener() {
             validateMilking()
         }
-
-
     }
 
     private fun validateMilking() {
 
         val cowName = binding.edtCowName.text.toString().trim().uppercase()
-        val quantity = binding.edtQuantity.text.toString().trim().toDouble()
+        var quantity = -1.0
+        if(binding.edtQuantity.text.isNotEmpty()) {
+            quantity = binding.edtQuantity.text.toString().trim().toDouble()
+        }
 
-        if (cowName.isNotEmpty() && quantity != null) {
-            milkingController.validateAndSaveMilking(cowName, quantity,
-                onSuccess = {
-                    findNavController().popBackStack()
-                    Toast.makeText(requireContext(), "Ordenha salva com sucesso.", Toast.LENGTH_SHORT).show()
-                },
-                onError = { errorMessage ->
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-                }
-            )
+        if (cowName.isNotEmpty()) {
+            if(quantity != -1.0) {
+                cowController.cowExists(cowName, { exists ->
+                    if (exists) {
+                        milkingController.validateAndSaveMilking(cowName, quantity,
+                            onSuccess = {
+                                findNavController().popBackStack()
+                                Toast.makeText(requireContext(), "Ordenha salva com sucesso.", Toast.LENGTH_SHORT).show()
+                            },
+                            onError = { errorMessage ->
+                                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    } else {
+                        Toast.makeText(requireContext(), "Não existe nenhuma animal com esse nome, digite um animal válido", Toast.LENGTH_SHORT).show()
+                    }
+                }, { error ->
+                    Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
+                })
+            } else {
+                Toast.makeText(requireContext(), "O campo quantidade não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            }
         } else {
-            Toast.makeText(requireContext(), "Preencha todos os campos corretamente.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "O campo nome não pode estar em branco.", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -55,7 +55,6 @@ class FoodListFragment : Fragment() {
             cowController.calculateFood(userId, onResult = { resultList ->
                 initAdapter(resultList)
             }, onError = { error ->
-                // Lidar com o erro
                 println("Erro: $error")
             })
         }
