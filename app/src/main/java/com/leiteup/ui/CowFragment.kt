@@ -2,7 +2,6 @@ package com.leiteup.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,7 +82,6 @@ class CowFragment : Fragment() {
         filteredCowList.clear()
         if (searchText.isEmpty()) {
             filteredCowList.addAll(cowList)
-            Log.i("COW_SEARCH", "SEARCH" + cowList)
         } else {
             for (cow in cowList) {
                 if (cow.name.uppercase().contains(searchText)) {
