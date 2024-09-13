@@ -1,5 +1,6 @@
 package com.leiteup.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import com.leiteup.ui.MilkingListDirections
 
 class MilkingAdapter(
     private val context: Context,
-    private val milkingList: List<Milking>,
+    private var milkingList: List<Milking>,
     val milkingselec: (Milking) -> Unit
 ): RecyclerView.Adapter<MilkingAdapter.MyViewHolder>() {
 
@@ -43,4 +44,9 @@ class MilkingAdapter(
     inner class MyViewHolder(val binding: MilkingAdapterBinding) :
         RecyclerView.ViewHolder(binding.root)
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newMilkList: List<Milking>) {
+        milkingList = newMilkList
+        notifyDataSetChanged()
+    }
 }

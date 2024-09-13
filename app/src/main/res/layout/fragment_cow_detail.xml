@@ -352,16 +352,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="vertical"
-            tools:ignore="MissingConstraints"
-            android:background="@drawable/bg_input_text"
-            android:layout_marginTop="20dp">
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_input_text"/>
 
-        </LinearLayout>
         </LinearLayout>
 
 
