@@ -178,13 +178,15 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
 
     fun cowExists(cowName: String, onResult: (Boolean) -> Unit, onError: (String) -> Unit) {
         val cowReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
-
+        Log.i("COW_VALIDATE", "ACHOUUU " + cowName)
         cowReference.orderByChild("name").equalTo(cowName)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
+                        Log.i("COW_VALIDATE", "ACHOUUU " + cowName)
                         onResult(true)
                     } else {
+                        Log.i("COW_VALIDATE", "NAO ACHOUUU " + cowName)
                         onResult(false)
                     }
                 }
@@ -192,6 +194,27 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.w("COW_CHECK", "Falha ao verificar a vaca: ${databaseError.toException()}")
                     onError("Falha ao verificar a vaca: ${databaseError.message}")
+                }
+            })
+    }
+
+    fun cowExistsByEarring(earring: Int, onResult: (Boolean) -> Unit, onError: (String) -> Unit) {
+        val cowReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
+
+        cowReference.orderByChild("earring").equalTo(earring.toDouble())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(childDataSnapshot: DataSnapshot) {
+                    if (childDataSnapshot.exists()) {
+                        onResult(true) // Se o animal com o brinco existe
+                        Log.i("COW_VALIDATE", "CHAMOU: " + childDataSnapshot.children.toString())
+                    } else {
+                        onResult(false) // Se o animal com o brinco não foi encontrado
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("COW_CHECK", "Falha ao verificar o animal pelo brinco: ${databaseError.toException()}")
+                    onError("Falha ao verificar o animal: ${databaseError.message}")
                 }
             })
     }

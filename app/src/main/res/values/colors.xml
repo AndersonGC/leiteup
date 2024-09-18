@@ -12,6 +12,7 @@
     <color name="gray">#333333</color>
     <color name="red">#9C0000</color>
     <color name="green">#257C00</color>
+    <color name="red_error">#f5dbdb</color>
     <color name="gradient">
         <gradient
             startColor="#003480"
