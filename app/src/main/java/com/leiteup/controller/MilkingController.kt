@@ -177,9 +177,12 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
 
                     for (childSnapshot in dataSnapshot.children) {
                         val milking = childSnapshot.getValue(Milking::class.java)
+                        Log.d("Firebase", "childSnapshot:" + milking)
                         if (milking != null) {
                             if (milking.dateTimestamp in startDate..endDate) {
                                 milkingList.add(milking)
+                                Log.d("Firebase", "milkingList:" + milkingList.toString())
+                                Log.d("Firebase", "milkingList:" + milking)
                             }
                         }
                     }
@@ -198,5 +201,47 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
             })
     }
 
+    fun getTotalMilkingsFromYesterday(onResult: (Double) -> Unit, onError: (String) -> Unit) {
+        // Obtém o timestamp do início e do fim do dia anterior
+        val currentDate = LocalDate.now()
+        val yesterday = currentDate.minusDays(1)
 
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        val formattedYesterday = yesterday.format(formatter)
+
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val startOfDayTimestamp = dateFormat.parse(formattedYesterday)?.time ?: 0L
+        val endOfDayTimestamp = startOfDayTimestamp + (24 * 60 * 60 * 1000) - 1 // fim do dia anterior
+
+        FirebaseHelper.getDatabase()
+            .child("milkings")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val milkingList = mutableListOf<Milking>()
+
+                    // Itera por todas as ordenhas no banco de dados
+                    for (childSnapshot in dataSnapshot.children) {
+                        val milking = childSnapshot.getValue(Milking::class.java)
+                        if (milking != null) {
+                            // Verifica se a ordenha ocorreu no dia anterior
+                            if (milking.dateTimestamp in startOfDayTimestamp..endOfDayTimestamp) {
+                                milkingList.add(milking)
+                            }
+                        }
+                    }
+
+                    // Calcula a soma das ordenhas do dia anterior
+                    if (milkingList.isNotEmpty()) {
+                        val totalMilkQuantity = milkingList.sumOf { it.quantity }
+                        onResult(totalMilkQuantity)
+                    } else {
+                        onError("Nenhuma ordenha encontrada para o dia anterior.")
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    onError("Falha ao consultar o banco de dados.")
+                }
+            })
+    }
 }

@@ -2,7 +2,6 @@ package com.leiteup.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,6 +73,7 @@ class FormCowFragment : Fragment() {
             isValid = false
             binding.edtEarring.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "O campo brinco não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
         }
     }
 
@@ -84,7 +84,7 @@ class FormCowFragment : Fragment() {
                     binding.edtName.setBackgroundResource(R.drawable.bg_input_error)
                     isValid = false
                     Toast.makeText(requireContext(), "Animal já cadastrado, insira um animal válido.", Toast.LENGTH_SHORT).show()
-                    binding.root.scrollTo(0, 0) // Sobe a tela para o início
+                    binding.root.scrollTo(0, 0)
                 } else {
                     isValid = true
                     binding.edtName.setBackgroundResource(R.drawable.bg_input_text)
@@ -97,6 +97,7 @@ class FormCowFragment : Fragment() {
             isValid = false
             binding.edtName.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "O campo nome não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
         }
     }
 
@@ -109,6 +110,7 @@ class FormCowFragment : Fragment() {
                 isValid = false
                 binding.rGender.setBackgroundResource(R.drawable.bg_input_error)
                 Toast.makeText(requireContext(), "Insira o sexo do animal.", Toast.LENGTH_SHORT).show()
+                binding.root.scrollTo(0, 0)
                 return
             }
         }
@@ -122,6 +124,7 @@ class FormCowFragment : Fragment() {
             isValid = false
             binding.edtBreed.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "Insira a raça do animal.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
             return
         } else {
             isValid = true
@@ -133,6 +136,7 @@ class FormCowFragment : Fragment() {
             isValid = false
             binding.edtWeight.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "Insira o peso do animal.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
             return
         } else {
             isValid = true
@@ -144,6 +148,7 @@ class FormCowFragment : Fragment() {
             isValid = false
             binding.edtDate.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "Insira a data de nascimento do animal.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
             return
         } else {
             isValid = true
@@ -157,6 +162,7 @@ class FormCowFragment : Fragment() {
                 isValid = false
                 binding.isIATF.setBackgroundResource(R.drawable.bg_input_error)
                 Toast.makeText(requireContext(), "Insira a forma de nascimento do animal.", Toast.LENGTH_SHORT).show()
+                binding.root.scrollTo(0, 0)
                 return
             }
         }
@@ -168,11 +174,7 @@ class FormCowFragment : Fragment() {
         var father = binding.edtFather.text.toString().trim()
         var mother = binding.edtMother.text.toString().trim()
 
-        Log.i("COW_VALIDATE", "CHAMOU: " + isValid)
         if (!isValid) {
-            // Toast.makeText(requireContext(), "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_SHORT).show()
-            binding.root.scrollTo(0,0)
-            Log.i("COW_VALIDATE", "CHAMOU: ")
             return
         } else {
             if(newCow) cow = Cow()
@@ -185,8 +187,6 @@ class FormCowFragment : Fragment() {
             cow.isIATF = isIATF
             cow.father = father
             cow.mother = mother
-
-            Log.i("COW_ERROR", cowName + cow)
 
             cowController.saveCow(cow, newCow, {
                 findNavController().popBackStack()

@@ -1,6 +1,7 @@
 package com.leiteup.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,7 @@ class FoodListFragment : Fragment() {
         if (userId != null) {
             cowController.calculateFood(userId, onResult = { resultList ->
                 initAdapter(resultList)
+                Log.i("LISTA FOOD", resultList.toString())
             }, onError = { error ->
                 println("Erro: $error")
             })

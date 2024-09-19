@@ -242,6 +242,7 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                     val results = mutableListOf<Pair<Cow, Double>>()
                     val cowsCount = cowList.size
                     var processedCowsCount = 0
+                    Log.d("Firebase", "cowsCount: " + cowsCount)
 
                     if (cowsCount > 0) {
                         for (cow in cowList) {
@@ -249,10 +250,11 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                                 val adjustedAverage = average / 2.5
                                 results.add(Pair(cow, adjustedAverage))
                                 processedCowsCount++
-
-                                // Verifica se todas as vacas foram processadas
+                                Log.d("Firebase", "processedCowsCount: " + processedCowsCount)
+                                // bug nesse if, onde o processedCow é somente 1 mas o cowsCount retorna todas as vacas, mas nem todas as vacas tem ordenha nos ultimos 7 dias
                                 if (processedCowsCount == cowsCount) {
                                     onResult(results)
+                                    Log.d("Firebase", "results2:" + results.toString())
                                 }
                             }, { error ->
                                 onError("Erro ao calcular a média para a vaca ${cow.name}: $error")
@@ -273,4 +275,135 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
             }
         })
     }
+
+    fun getCowWithHighestMilkAverage(
+        userId: String,
+        onResult: (Cow?) -> Unit, // Retorna a vaca com a maior média ou null se não houver
+        onError: (String) -> Unit
+    ) {
+        val cowReference = FirebaseHelper.getDatabase().child("cow").child(userId)
+
+        cowReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val cowList = mutableListOf<Cow>()
+                if (dataSnapshot.exists()) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val cow = childSnapshot.getValue(Cow::class.java)
+                        if (cow != null) {
+                            cowList.add(cow)
+                        }
+                    }
+
+                    if (cowList.isEmpty()) {
+                        onResult(null) // Nenhuma vaca encontrada
+                        return
+                    }
+
+                    // Processar médias para cada vaca
+                    val milkingController = MilkingController()
+                    var highestAverage: Double? = null
+                    var cowWithHighestAverage: Cow? = null
+                    var processedCowsCount = 0
+
+                    for (cow in cowList) {
+                        milkingController.getAverageMilkingsLast7Days(cow.name, { average ->
+                            processedCowsCount++
+
+                            if (highestAverage == null || average > highestAverage!!) {
+                                highestAverage = average
+                                cowWithHighestAverage = cow
+                            }
+
+                            // Verifica se todas as vacas foram processadas
+                            if (processedCowsCount == cowList.size) {
+                                onResult(cowWithHighestAverage)
+                            }
+                        }, { error ->
+                            processedCowsCount++
+                            Log.e("COW_AVG_ERROR", "Erro ao calcular a média para a vaca ${cow.name}: $error")
+
+                            // Verifica se todas as vacas foram processadas
+                            if (processedCowsCount == cowList.size) {
+                                onResult(cowWithHighestAverage)
+                            }
+                        })
+                    }
+                } else {
+                    onError("Nenhuma vaca encontrada para o usuário $userId")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("COW_FETCH_ERROR", "Falha ao ler vacas: ${databaseError.toException()}")
+                onError("Falha ao ler vacas.")
+            }
+        })
+    }
+
+    fun getCowWithLowestMilkAverage(
+        userId: String,
+        onResult: (Cow?) -> Unit, // Retorna a vaca com a menor média ou null se não houver
+        onError: (String) -> Unit
+    ) {
+        val cowReference = FirebaseHelper.getDatabase().child("cow").child(userId)
+
+        cowReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val cowList = mutableListOf<Cow>()
+                if (dataSnapshot.exists()) {
+                    for (childSnapshot in dataSnapshot.children) {
+                        val cow = childSnapshot.getValue(Cow::class.java)
+                        if (cow != null) {
+                            cowList.add(cow)
+                        }
+                    }
+
+                    if (cowList.isEmpty()) {
+                        onResult(null) // Nenhuma vaca encontrada
+                        return
+                    }
+
+                    // Processar médias para cada vaca
+                    val milkingController = MilkingController()
+                    var lowestAverage: Double? = null
+                    var cowWithLowestAverage: Cow? = null
+                    var processedCowsCount = 0
+
+                    for (cow in cowList) {
+                        milkingController.getAverageMilkingsLast7Days(cow.name, { average ->
+                            processedCowsCount++
+
+                            // Compara para encontrar a menor média
+                            if (lowestAverage == null || average < lowestAverage!!) {
+                                lowestAverage = average
+                                cowWithLowestAverage = cow
+                            }
+
+                            // Verifica se todas as vacas foram processadas
+                            if (processedCowsCount == cowList.size) {
+                                onResult(cowWithLowestAverage)
+                            }
+                        }, { error ->
+                            processedCowsCount++
+                            Log.e("COW_AVG_ERROR", "Erro ao calcular a média para a vaca ${cow.name}: $error")
+
+                            // Verifica se todas as vacas foram processadas
+                            if (processedCowsCount == cowList.size) {
+                                onResult(cowWithLowestAverage)
+                            }
+                        })
+                    }
+                } else {
+                    onError("Nenhuma vaca encontrada para o usuário $userId")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("COW_FETCH_ERROR", "Falha ao ler vacas: ${databaseError.toException()}")
+                onError("Falha ao ler vacas.")
+            }
+        })
+    }
+
+
 }

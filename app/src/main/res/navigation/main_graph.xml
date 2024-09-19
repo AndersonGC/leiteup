@@ -63,6 +63,9 @@
         <action
             android:id="@+id/action_homeFragment_to_foodListFragment"
             app:destination="@id/foodListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_farmDataFragment"
+            app:destination="@id/farmDataFragment" />
     </fragment>
     <fragment
         android:id="@+id/cowFragment"
@@ -136,5 +139,10 @@
             android:name="milking"
             app:argType="com.leiteup.model.Milking" />
     </fragment>
+    <fragment
+        android:id="@+id/farmDataFragment"
+        android:name="com.leiteup.ui.FarmDataFragment"
+        android:label="fragment_farm_data"
+        tools:layout="@layout/fragment_farm_data" />
 
 </navigation>
