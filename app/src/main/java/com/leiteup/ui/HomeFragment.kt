@@ -38,6 +38,9 @@ class HomeFragment : Fragment() {
         binding.btnFood.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_foodListFragment)
         }
+        binding.btnReports.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_farmDataFragment)
+        }
     }
 
     override fun onDestroyView() {

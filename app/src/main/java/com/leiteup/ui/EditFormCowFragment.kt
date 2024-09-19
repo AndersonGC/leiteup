@@ -1,11 +1,12 @@
 package com.leiteup.ui
 
+import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -13,7 +14,9 @@ import com.leiteup.R
 import com.leiteup.controller.CowController
 import com.leiteup.databinding.FragmentEditFormCowBinding
 import com.leiteup.model.Cow
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class EditFormCowFragment : Fragment() {
 
@@ -76,7 +79,9 @@ class EditFormCowFragment : Fragment() {
         view?.findViewById<Button>(R.id.btnAddCow)?.setOnClickListener {
             validadeEarring()
         }
+        binding.edtDate.setOnClickListener() {showDatePickerDialog()}
     }
+
 
     private fun validadeEarring() {
         val newEarringText = binding.edtEarring.text.toString().trim()
@@ -106,6 +111,7 @@ class EditFormCowFragment : Fragment() {
             isValid = false
             binding.edtEarring.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "O campo brinco não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
         }
     }
 
@@ -135,6 +141,7 @@ class EditFormCowFragment : Fragment() {
             isValid = false
             binding.edtName.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "O campo nome não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
         }
     }
 
@@ -145,13 +152,42 @@ class EditFormCowFragment : Fragment() {
             R.id.btnFemale -> "Fêmea"
             else -> ""
         }
+
         val newBreed = binding.edtBreed.text.toString().trim()
-        var newWeight = binding.edtWeight.text.toString().trim().toInt()
+        if(newBreed.isEmpty()) {
+            isValid = false
+            binding.edtBreed.setBackgroundResource(R.drawable.bg_input_error)
+            Toast.makeText(requireContext(), "O campo raça não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
+            return
+        } else {
+            isValid = true
+            binding.edtBreed.setBackgroundResource(R.drawable.bg_input_text)
+        }
 
+        var newWeightText = binding.edtWeight.text.toString().trim()
+        if(newWeightText.isEmpty()) {
+            isValid = false
+            binding.edtWeight.setBackgroundResource(R.drawable.bg_input_error)
+            Toast.makeText(requireContext(), "O campo peso não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
+            return
+        } else {
+            isValid = true
+            binding.edtWeight.setBackgroundResource(R.drawable.bg_input_text)
+        }
 
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        var birthDay = binding.edtDate.text.toString().trim()
-        val newBirthDayFormatter = birthDay.format(formatter)
+        var newBirthDay = binding.edtDate.text.toString().trim()
+        if(newBirthDay.isEmpty()) {
+            isValid = false
+            binding.edtDate.setBackgroundResource(R.drawable.bg_input_error)
+            Toast.makeText(requireContext(), "O campo data de nascimento não pode estar em branco.", Toast.LENGTH_SHORT).show()
+            binding.root.scrollTo(0, 0)
+            return
+        } else {
+            isValid = true
+            binding.edtDate.setBackgroundResource(R.drawable.bg_input_text)
+        }
         var newIatf = when (binding.isIATF.checkedRadioButtonId) {
             R.id.btnYes -> true
             R.id.btnNo -> false
@@ -159,13 +195,9 @@ class EditFormCowFragment : Fragment() {
         }
         var newFather = binding.edtFather.text.toString().trim()
         var newMother = binding.edtMother.text.toString().trim()
-        Log.e("COW_ID", "ID COW" + cow.id)
 
 
         if (!isValid) {
-            // Toast.makeText(requireContext(), "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_SHORT).show()
-            binding.root.scrollTo(0,0)
-            Log.i("COW_VALIDATE", "CHAMOU: ")
             return
         } else {
             val updatedCow = Cow(
@@ -174,8 +206,8 @@ class EditFormCowFragment : Fragment() {
                 name = newCowName,
                 gender = newGender,
                 breed = newBreed,
-                weight = newWeight,
-                birthDay = newBirthDayFormatter,
+                weight = newWeightText.toInt(),
+                birthDay = newBirthDay,
                 isIATF = newIatf,
                 father = newFather,
                 mother = newMother
@@ -194,6 +226,30 @@ class EditFormCowFragment : Fragment() {
                 }
             )
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            R.style.CustomDatePickerTheme,
+            { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
+                // Define o formato da data
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val date = Calendar.getInstance()
+                date.set(selectedYear, selectedMonth, selectedDay)
+                binding.edtDate.setText(sdf.format(date.time))
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.show()
     }
 
     override fun onDestroyView() {
