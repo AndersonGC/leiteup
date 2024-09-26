@@ -23,73 +23,88 @@
             android:layout_height="match_parent"
             android:foregroundGravity="center">
 
-            <!-- Foto do animal à esquerda -->
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/cowImage"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/img"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Nome do animal à direita -->
-
-            <TextView
-                android:id="@+id/earring"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center"
-                android:layout_marginTop="25dp"
-                android:layout_marginLeft="30dp"
-                android:text="110"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/cowImage"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/breed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:gravity="center"
-                android:text="Gir"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/cowImage"
-                app:layout_constraintTop_toBottomOf="@+id/earring" />
-
-            <TextView
-                android:id="@+id/gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="100dp"
-                android:text="Fêmea"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cowImage"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.321" />
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="0dp">
 
-            <TextView
-                android:id="@+id/yearsOld"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="200dp"
-                android:text="5A"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cowImage"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.321" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="MissingConstraints">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/cowImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/img"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!--                    primeira coluna-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat"
+                            android:text="Nome"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/breed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Raça"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Sexo"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <!--                    segunda coluna-->
+
+                    <TextView
+                        android:id="@+id/birthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:foregroundGravity="center"
+                        android:gravity="center"
+                        android:text="dd/MM/yyyy"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
 
 
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

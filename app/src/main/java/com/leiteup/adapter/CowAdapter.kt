@@ -35,11 +35,10 @@ class CowAdapter(
         val cow = cowList[position]
 
         // holder.binding.cowImage.setImageDrawable() = cow.cowImage
-        holder.binding.earring.text = cow.earring.toString()
+        holder.binding.name.text = cow.name.lowercase().replaceFirstChar { it.uppercase()}
         holder.binding.breed.text = cow.breed
         holder.binding.gender.text = cow.gender
-//        var yearsOld: Int = Period.between(cow.birthDay, LocalDate.now()).years
-//        holder.binding.yearsOld.text = yearsOld.toString()
+        holder.binding.birthday.text = cow.birthDay
 
         holder.itemView.setOnClickListener {
             val action = CowFragmentDirections.actionCowFragmentToCowDetail(cow)
