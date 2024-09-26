@@ -11,28 +11,6 @@ import com.leiteup.model.Milking
 
 class CowController (private val onCowsReceived: (List<Cow>) -> Unit = {}, private val onError: (String) -> Unit = {}) {
 
-//    fun updateCow(updatedCow: Cow, onSuccess: () -> Unit, onError: (String) -> Unit) {
-//        val databaseReference: DatabaseReference = FirebaseHelper.getDatabase()
-//            .child("cow")
-//            .child(FirebaseHelper.getIdUser() ?: "")
-//
-//        databaseReference
-//            .child(updatedCow.id)
-//            .setValue(updatedCow)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    Log.d("COW_UPDATE", "Animal atualizado com sucesso.")
-//                    onSuccess()
-//                } else {
-//                    Log.e("COW_UPDATE", "Erro ao atualizar animal: ${task.exception?.message}")
-//                    onError("Erro ao atualizar o animal.")
-//                }
-//            }
-//            .addOnFailureListener { e ->
-//                Log.e("COW_UPDATE", "Erro ao atualizar animal: ${e.message}")
-//                onError(e.message ?: "Erro desconhecido ao atualizar o animal.")
-//            }
-//    }
 fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String) -> Unit) {
     val cowReference: DatabaseReference = FirebaseHelper
         .getDatabase()
@@ -81,15 +59,12 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
             .child("cow")
             .child(FirebaseHelper.getIdUser() ?: "")
 
-        // Atualiza a vaca
         databaseReference.child(updatedCow.id).setValue(updatedCow)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("COW_UPDATE", "Animal atualizado com sucesso.")
 
-                    // Verifica se o nome foi alterado
                     if (oldCowName != updatedCow.name) {
-                        // Nome da vaca foi alterado, agora atualiza os milkings
                         updateMilkingsWithNewCowName(oldCowName, updatedCow.name, onSuccess, onError)
                     } else {
                         onSuccess() // Se o nome não foi alterado, apenas completa a operação
@@ -122,20 +97,19 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                         for (childSnapshot in dataSnapshot.children) {
                             val milking = childSnapshot.getValue(Milking::class.java)
                             if (milking != null) {
-                                // Atualiza o nome da vaca na ordenha
+
                                 milking.cowName = newCowName
 
-                                // Salva a ordenha atualizada no banco de dados
                                 milkingReference.child(milking.id).setValue(milking)
                                     .addOnFailureListener {
                                         Log.e("MILKING_UPDATE", "Erro ao atualizar ordenha: ${it.message}")
                                     }
                             }
                         }
-                        onSuccess() // Conclui a operação após todas as ordenhas terem sido atualizadas
+                        onSuccess()
                     } else {
                         Log.d("MILKING_UPDATE", "Nenhuma ordenha encontrada para o nome da vaca: $oldCowName")
-                        onSuccess() // Conclui a operação mesmo que não haja ordenhas para atualizar
+                        onSuccess()
                     }
                 }
 
@@ -257,6 +231,14 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                                     Log.d("Firebase", "results2:" + results.toString())
                                 }
                             }, { error ->
+                                processedCowsCount++
+                                Log.d("Firebase", "Erro para a vaca ${cow.name}: $error")
+
+                                // Verifica se processamos todas as vacas
+                                if (processedCowsCount == cowsCount) {
+                                    onResult(results)
+                                    Log.d("Firebase", "results2: $results")
+                                }
                                 onError("Erro ao calcular a média para a vaca ${cow.name}: $error")
                             })
                         }

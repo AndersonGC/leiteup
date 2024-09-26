@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.leiteup.R
 import com.leiteup.controller.CowController
 import com.leiteup.controller.MilkingController
 import com.leiteup.databinding.FragmentMilkingBinding
@@ -68,15 +69,20 @@ class MilkingFragment : Fragment() {
                             }
                         )
                     } else {
+                        binding.edtCowName.setBackgroundResource(R.drawable.bg_input_error)
+                        binding.edtQuantity.setBackgroundResource(R.drawable.bg_input_text)
                         Toast.makeText(requireContext(), "Não existe nenhuma animal com esse nome, digite um animal válido", Toast.LENGTH_SHORT).show()
                     }
                 }, { error ->
                     Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
                 })
             } else {
+                binding.edtCowName.setBackgroundResource(R.drawable.bg_input_text)
+                binding.edtQuantity.setBackgroundResource(R.drawable.bg_input_error)
                 Toast.makeText(requireContext(), "O campo quantidade não pode estar em branco.", Toast.LENGTH_SHORT).show()
             }
         } else {
+            binding.edtCowName.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "O campo nome não pode estar em branco.", Toast.LENGTH_SHORT).show()
         }
     }
