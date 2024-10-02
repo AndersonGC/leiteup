@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_homeFragment_to_farmDataFragment"
             app:destination="@id/farmDataFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_reproductionFragment"
+            app:destination="@id/reproductionFragment" />
     </fragment>
     <fragment
         android:id="@+id/cowFragment"
@@ -144,5 +147,19 @@
         android:name="com.leiteup.ui.FarmDataFragment"
         android:label="fragment_farm_data"
         tools:layout="@layout/fragment_farm_data" />
+    <fragment
+        android:id="@+id/reproductionFragment"
+        android:name="com.leiteup.ui.ReproductionFragment"
+        android:label="fragment_reproduction"
+        tools:layout="@layout/fragment_reproduction" >
+        <action
+            android:id="@+id/action_reproductionFragment_to_formReproductionFragment"
+            app:destination="@id/formReproductionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formReproductionFragment"
+        android:name="com.leiteup.ui.FormReproductionFragment"
+        android:label="fragment_form_reproduction"
+        tools:layout="@layout/fragment_form_reproduction" />
 
 </navigation>

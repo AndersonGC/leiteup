@@ -210,7 +210,9 @@ class EditFormCowFragment : Fragment() {
                 birthDay = newBirthDay,
                 isIATF = newIatf,
                 father = newFather,
-                mother = newMother
+                mother = newMother,
+                pregnant = cow.pregnant,
+                pregnantDate = cow.pregnantDate
             )
 
             cowController.updateCowAndMilkings(

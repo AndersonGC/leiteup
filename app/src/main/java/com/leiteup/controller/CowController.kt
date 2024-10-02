@@ -150,6 +150,62 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
         })
     }
 
+    fun fetchPregnantCows(onCowsPregnantReceived: (List<Cow>) -> Unit) {
+        val databaseReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
+
+        databaseReference.orderByChild("pregnant").equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val cowPregnant = mutableListOf<Cow>()
+                    for (snapshot in dataSnapshot.children) {
+                        val cow = snapshot.getValue(Cow::class.java)
+                        cow?.let {
+                            cowPregnant.add(it)
+                        }
+                    }
+                    onCowsPregnantReceived(cowPregnant)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle possible errors
+                    Log.e("CowController", "Error fetching pregnant cows", databaseError.toException())
+                }
+            })
+    }
+
+    fun updateCowWithPragnant(cowName: String, datePregnant: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val databaseReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
+
+        databaseReference.orderByChild("name").equalTo(cowName).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val snapshot = task.result
+                if (snapshot.exists()) {
+                    // Itera sobre os resultados encontrados
+                    for (cowSnapshot in snapshot.children) {
+                        // Atualiza os dados da vaca
+                        val updates = mapOf(
+                            "pregnant" to true,
+                            "pregnantDate" to datePregnant
+                        )
+                        cowSnapshot.ref.updateChildren(updates).addOnCompleteListener { updateTask ->
+                            if (updateTask.isSuccessful) {
+                                onSuccess() // Chama o callback de sucesso
+                            } else {
+                                onError(updateTask.exception?.message ?: "Erro ao atualizar dados.") // Chama o callback de erro
+                            }
+                        }
+                        break // Se uma vaca foi encontrada e atualizada, não precisa continuar iterando
+                    }
+                } else {
+                    onError("Nenhuma vaca encontrada com esse nome.") // Chama o callback de erro se não encontrou a vaca
+                }
+            } else {
+                onError(task.exception?.message ?: "Erro ao buscar dados da vaca.") // Chama o callback de erro
+            }
+        }
+    }
+
+
     fun cowExists(cowName: String, onResult: (Boolean) -> Unit, onError: (String) -> Unit) {
         val cowReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
         Log.i("COW_VALIDATE", "ACHOUUU " + cowName)
