@@ -41,6 +41,9 @@ class HomeFragment : Fragment() {
         binding.btnReports.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_farmDataFragment)
         }
+        binding.btnToReproduction.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_reproductionFragment)
+        }
     }
 
     override fun onDestroyView() {

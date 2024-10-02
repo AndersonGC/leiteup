@@ -19,6 +19,8 @@ data class Cow(
     var name: String = "",
     var weight: Int = 0,
     var birthDay: String = "",
+    var pregnant: Boolean = false,
+    var pregnantDate: String = "",
 ) : Parcelable {
     init {
         if (id.isEmpty()) {
