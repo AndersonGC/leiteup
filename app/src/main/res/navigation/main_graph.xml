@@ -69,6 +69,9 @@
         <action
             android:id="@+id/action_homeFragment_to_reproductionFragment"
             app:destination="@id/reproductionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_helpFragment"
+            app:destination="@id/helpFragment" />
     </fragment>
     <fragment
         android:id="@+id/cowFragment"
@@ -155,11 +158,28 @@
         <action
             android:id="@+id/action_reproductionFragment_to_formReproductionFragment"
             app:destination="@id/formReproductionFragment" />
+        <action
+            android:id="@+id/action_reproductionFragment_to_detailReproductionFragment"
+            app:destination="@id/detailReproductionFragment" />
     </fragment>
     <fragment
         android:id="@+id/formReproductionFragment"
         android:name="com.leiteup.ui.FormReproductionFragment"
         android:label="fragment_form_reproduction"
         tools:layout="@layout/fragment_form_reproduction" />
+    <fragment
+        android:id="@+id/detailReproductionFragment"
+        android:name="com.leiteup.ui.DetailReproductionFragment"
+        android:label="fragment_detail_reproduction"
+        tools:layout="@layout/fragment_detail_reproduction" >
+        <argument
+            android:name="cow"
+            app:argType="com.leiteup.model.Cow" />
+    </fragment>
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.leiteup.ui.HelpFragment"
+        android:label="fragment_help"
+        tools:layout="@layout/fragment_help" />
 
 </navigation>

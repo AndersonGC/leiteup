@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.HelpFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Ajuda"
+                    android:textColor="@color/blue_app"
+                    android:textAllCaps="true"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints"
+                android:background="@drawable/bg_input_text"
+                android:layout_marginTop="90dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum dolor sit amet?"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:justificationMode="inter_word"
+                        android:text="Lorem ipsum dolor sit amet. Vel accusantium dolorem qui dolores repellendus a earum quos qui architecto quam est rerum quae et accusamus quibusdam in galisum reprehenderit. Qui sint laboriosam qui quas ducimus non recusandae dolore non nihil obcaecati."
+                        android:textSize="18sp"
+                        android:layout_marginEnd="8dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints"
+                android:background="@drawable/bg_input_text"
+                android:layout_marginTop="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum dolor sit amet?"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:justificationMode="inter_word"
+                        android:text="Lorem ipsum dolor sit amet. Vel accusantium dolorem qui dolores repellendus a earum quos qui architecto quam est rerum quae et accusamus quibusdam in galisum reprehenderit. Qui sint laboriosam qui quas ducimus non recusandae dolore non nihil obcaecati."
+                        android:textSize="18sp"
+                        android:layout_marginEnd="8dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints"
+                android:background="@drawable/bg_input_text"
+                android:layout_marginBottom="100dp"
+                android:layout_marginTop="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum dolor sit amet?"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/blue_app"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:justificationMode="inter_word"
+                        android:text="Lorem ipsum dolor sit amet. Vel accusantium dolorem qui dolores repellendus a earum quos qui architecto quam est rerum quae et accusamus quibusdam in galisum reprehenderit. Qui sint laboriosam qui quas ducimus non recusandae dolore non nihil obcaecati."
+                        android:textSize="18sp"
+                        android:layout_marginEnd="8dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

@@ -150,8 +150,8 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
         })
     }
 
-    fun fetchPregnantCows(onCowsPregnantReceived: (List<Cow>) -> Unit) {
-        val databaseReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
+    fun fetchPregnantCows(userId: String, onCowsPregnantReceived: (List<Cow>) -> Unit) {
+        val databaseReference = FirebaseHelper.getDatabase().child("cow").child(userId)
 
         databaseReference.orderByChild("pregnant").equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -173,7 +173,7 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
             })
     }
 
-    fun updateCowWithPragnant(cowName: String, datePregnant: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun updateCowWithPragnant(cowName: String, datePregnant: String, isPregnant: Boolean, onSuccess: () -> Unit, onError: (String) -> Unit) {
         val databaseReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
 
         databaseReference.orderByChild("name").equalTo(cowName).get().addOnCompleteListener { task ->
@@ -184,7 +184,7 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                     for (cowSnapshot in snapshot.children) {
                         // Atualiza os dados da vaca
                         val updates = mapOf(
-                            "pregnant" to true,
+                            "pregnant" to isPregnant,
                             "pregnantDate" to datePregnant
                         )
                         cowSnapshot.ref.updateChildren(updates).addOnCompleteListener { updateTask ->

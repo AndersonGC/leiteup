@@ -13,7 +13,10 @@ import com.leiteup.R
 import com.leiteup.adapter.ReproductionAdapter
 import com.leiteup.controller.CowController
 import com.leiteup.databinding.FragmentReproductionBinding
+import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Cow
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class ReproductionFragment : Fragment() {
@@ -57,13 +60,31 @@ class ReproductionFragment : Fragment() {
     }
 
     private fun fetchPregnantCows() {
-        cowController.fetchPregnantCows { cows ->
-            cowPregnant.clear()
-            cowPregnant.addAll(cows)
-            initAdapter()
-            if (cows.isEmpty()) {
-                Toast.makeText(requireContext(), "Nenhuma vaca grávida encontrada", Toast.LENGTH_SHORT).show()
+        val userId = FirebaseHelper.getIdUser()
+        if (!userId.isNullOrEmpty()) {
+            cowController.fetchCows(userId)
+            cowController.fetchPregnantCows(userId) { cows ->
+                cowPregnant.clear()
+
+                // Formato de data esperado
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+                // Ordenar a lista de vacas pela data
+                cowPregnant.addAll(cows.sortedBy { cow ->
+                    // Converter a string pregnantDate em um objeto Date
+                    dateFormat.parse(cow.pregnantDate)
+                })
+                initAdapter()
+                if (cows.isEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Nenhuma vaca grávida encontrada",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
+        } else {
+            Toast.makeText(requireContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show()
         }
     }
 

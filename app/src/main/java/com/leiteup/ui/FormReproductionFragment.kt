@@ -61,7 +61,7 @@ class FormReproductionFragment : Fragment() {
             if(datePregnant.isNotEmpty()) {
                 cowController.cowExists(cowName, { exists ->
                     if (exists) {
-                        cowController.updateCowWithPragnant(cowName, datePregnant,
+                        cowController.updateCowWithPragnant(cowName, datePregnant, true,
                             onSuccess = {
                                 findNavController().popBackStack()
                                 Toast.makeText(requireContext(), "Animal salvo com sucesso.", Toast.LENGTH_SHORT).show()
