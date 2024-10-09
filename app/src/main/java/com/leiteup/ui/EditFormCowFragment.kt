@@ -88,7 +88,7 @@ class EditFormCowFragment : Fragment() {
         val newCowName = binding.edtName.text.toString().uppercase()
         if(newEarringText.isNotEmpty()) {
             if(newEarringText.toInt() != cow.earring) {
-                cowController.cowExistsByEarring(newEarringText.toInt(), { exists ->
+                cowController.cowExistsByEarring(newEarringText.toInt(), { exists, cow ->
                     if (exists) {
                         binding.edtEarring.setBackgroundResource(R.drawable.bg_input_error)
                         isValid = false
@@ -118,8 +118,8 @@ class EditFormCowFragment : Fragment() {
     private fun validateCow(newEarringText: String, newCowName: String) {
         if(newCowName.isNotEmpty()) {
             if(newCowName.uppercase() != cow.name) {
-                cowController.cowExists(newCowName, { exists ->
-                    if (exists) {
+                cowController.cowExists(newCowName, { exists, cow ->
+                    if (exists && cow != null) {
                         binding.edtName.setBackgroundResource(R.drawable.bg_input_error)
                         isValid = false
                         Toast.makeText(requireContext(), "Animal já cadastrado, insira um animal válido.", Toast.LENGTH_SHORT).show()
@@ -217,6 +217,7 @@ class EditFormCowFragment : Fragment() {
 
             cowController.updateCowAndMilkings(
                 oldCowName = cow.name,
+                oldCowEarring = cow.earring,
                 updatedCow = updatedCow, // O objeto Cow atualizado
                 onSuccess = {
                     findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)

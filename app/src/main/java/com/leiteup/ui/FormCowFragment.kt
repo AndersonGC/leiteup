@@ -52,35 +52,32 @@ class FormCowFragment : Fragment() {
     }
 
     private fun validadeEarring() {
-        val earringText = binding.edtEarring.text.toString().trim()
+        var earringText = binding.edtEarring.text.toString().trim()
         val cowName = binding.edtName.text.toString().uppercase()
-        if(earringText.isNotEmpty()) {
-            cowController.cowExistsByEarring(earringText.toInt(), { exists ->
-                if (exists) {
-                    binding.edtEarring.setBackgroundResource(R.drawable.bg_input_error)
-                    isValid = false
-                    Toast.makeText(requireContext(), "Brinco já cadastrado, insira um brinco válido.", Toast.LENGTH_SHORT).show()
-                    binding.root.scrollTo(0, 0)
-                } else {
-                    isValid = true
-                    binding.edtEarring.setBackgroundResource(R.drawable.bg_input_text)
-                    validateCow(earringText, cowName)
-                }
-            }, { error ->
-                Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
-            })
-        } else {
-            isValid = false
-            binding.edtEarring.setBackgroundResource(R.drawable.bg_input_error)
-            Toast.makeText(requireContext(), "O campo brinco não pode estar em branco.", Toast.LENGTH_SHORT).show()
-            binding.root.scrollTo(0, 0)
+
+        if (earringText.isEmpty()) {
+            earringText = generateUniqueEarring()
         }
+        cowController.cowExistsByEarring(earringText.toInt(), { exists, cow ->
+            if (exists) {
+                binding.edtEarring.setBackgroundResource(R.drawable.bg_input_error)
+                isValid = false
+                Toast.makeText(requireContext(), "Brinco já cadastrado, insira um brinco válido.", Toast.LENGTH_SHORT).show()
+                binding.root.scrollTo(0, 0)
+            } else {
+                isValid = true
+                binding.edtEarring.setBackgroundResource(R.drawable.bg_input_text)
+                validateCow(earringText, cowName)
+            }
+        }, { error ->
+            Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun validateCow(earringText: String, cowName: String) {
         if(cowName.isNotEmpty()) {
-            cowController.cowExists(cowName, { exists ->
-                if (exists) {
+            cowController.cowExists(cowName, { exists, cow ->
+                if (exists && cow != null) {
                     binding.edtName.setBackgroundResource(R.drawable.bg_input_error)
                     isValid = false
                     Toast.makeText(requireContext(), "Animal já cadastrado, insira um animal válido.", Toast.LENGTH_SHORT).show()
@@ -195,6 +192,23 @@ class FormCowFragment : Fragment() {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
             })
         }
+    }
+
+    private fun generateUniqueEarring(): String {
+        var newEarring: Int
+        do {
+            newEarring = (0..99999).random()
+        } while (isEarringDuplicated(newEarring))
+        return newEarring.toString()
+    }
+
+    private fun isEarringDuplicated(earring: Int): Boolean {
+        var isDuplicated = false
+        cowController.cowExistsByEarring(earring, { exists, cow ->
+            isDuplicated = exists
+        }, { error ->
+        })
+        return isDuplicated
     }
 
     private fun showDatePickerDialog() {

@@ -72,9 +72,9 @@ class EditFormMilkFragment : Fragment() {
         }
         if (newCowName.isNotEmpty()) {
             if(newQuantity != -1.0) {
-                cowController.cowExists(newCowName, { exists ->
-                    if (exists) {
-                        updateMilking(newCowName, newQuantity)
+                cowController.cowExists(newCowName, { exists, cow ->
+                    if (exists && cow != null) {
+                        updateMilking(newCowName, newQuantity, cow.earring)
                         Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
                     } else {
                         binding.edtCowName.setBackgroundResource(R.drawable.bg_input_error)
@@ -95,10 +95,11 @@ class EditFormMilkFragment : Fragment() {
         }
     }
 
-    private fun updateMilking(newCowName: String, newQuantity: Double) {
+    private fun updateMilking(newCowName: String, newQuantity: Double, cowEarring: Int) {
         milkingController.updateMilking(
             milking.id, // O ID da ordenha a ser atualizado
             newCowName,
+            cowEarring,
             newQuantity,
             onSuccess = {
                 findNavController().popBackStack()

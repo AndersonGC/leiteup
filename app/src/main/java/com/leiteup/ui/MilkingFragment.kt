@@ -49,41 +49,91 @@ class MilkingFragment : Fragment() {
 
     private fun validateMilking() {
 
-        val cowName = binding.edtCowName.text.toString().trim().uppercase()
+        var cowEarringText = ""
+        var cowName = ""
+
+        if(binding.btnEarring.isChecked) {
+            cowEarringText = binding.edtCowNameOrEarring.text.toString().trim()
+        } else {
+            cowName = binding.edtCowNameOrEarring.text.toString().trim().uppercase()
+        }
+
         var quantity = -1.0
         if(binding.edtQuantity.text.isNotEmpty()) {
             quantity = binding.edtQuantity.text.toString().trim().toDouble()
         }
-
-        if (cowName.isNotEmpty()) {
+        if(cowEarringText.isEmpty() && cowName.isEmpty()){
+            binding.edtCowNameOrEarring.setBackgroundResource(R.drawable.bg_input_error)
+            Toast.makeText(requireContext(), "O campo de indentificação não pode estar em branco.", Toast.LENGTH_SHORT).show()
+        } else {
             if(quantity != -1.0) {
-                cowController.cowExists(cowName, { exists ->
-                    if (exists) {
-                        milkingController.validateAndSaveMilking(cowName, quantity,
-                            onSuccess = {
-                                findNavController().popBackStack()
-                                Toast.makeText(requireContext(), "Ordenha salva com sucesso.", Toast.LENGTH_SHORT).show()
-                            },
-                            onError = { errorMessage ->
-                                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                if (cowName.isNotEmpty()) {
+                    cowController.cowExists(cowName, { exists, cow ->
+                        if (exists && cow != null) {
+                            milkingController.validateAndSaveMilking(cowName, quantity, cow.earring,
+                                onSuccess = {
+                                    findNavController().popBackStack()
+                                    Toast.makeText(requireContext(), "Ordenha salva com sucesso.", Toast.LENGTH_SHORT).show()
+                                },
+                                onError = { errorMessage ->
+                                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        } else {
+                            binding.edtCowNameOrEarring.setBackgroundResource(R.drawable.bg_input_error)
+                            binding.edtQuantity.setBackgroundResource(R.drawable.bg_input_text)
+                            Toast.makeText(requireContext(), "Não existe nenhuma animal com esse nome ou brinco, digite um animal válido", Toast.LENGTH_SHORT).show()
+                        }
+                    }, { error ->
+                        Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
+                    })
+                }
+                if (cowEarringText.isNotEmpty()) {
+                    val cowEarring = cowEarringText.toIntOrNull()
+                    if(cowEarring != null) {
+                        cowController.cowExistsByEarring(cowEarringText.toInt(), { exists, cow ->
+                            if (exists && cow != null) {
+                                milkingController.validateAndSaveMilking(cow.name,
+                                    quantity,
+                                    cowEarringText.toInt(),
+                                    onSuccess = {
+                                        findNavController().popBackStack()
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Ordenha salva com sucesso.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    },
+                                    onError = { errorMessage ->
+                                        Toast.makeText(
+                                            requireContext(),
+                                            errorMessage,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                )
+                            } else {
+                                binding.edtCowNameOrEarring.setBackgroundResource(R.drawable.bg_input_error)
+                                binding.edtQuantity.setBackgroundResource(R.drawable.bg_input_text)
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Não existe nenhuma animal com esse nome ou brinco, digite um animal válido",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                        )
+                        }, { error ->
+                            Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
+                        })
                     } else {
-                        binding.edtCowName.setBackgroundResource(R.drawable.bg_input_error)
-                        binding.edtQuantity.setBackgroundResource(R.drawable.bg_input_text)
-                        Toast.makeText(requireContext(), "Não existe nenhuma animal com esse nome, digite um animal válido", Toast.LENGTH_SHORT).show()
+                        binding.edtCowNameOrEarring.setBackgroundResource(R.drawable.bg_input_error)
+                        Toast.makeText(requireContext(), "O campo brinco deve conter apenas números.", Toast.LENGTH_SHORT).show()
                     }
-                }, { error ->
-                    Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
-                })
+                }
             } else {
-                binding.edtCowName.setBackgroundResource(R.drawable.bg_input_text)
+                binding.edtCowNameOrEarring.setBackgroundResource(R.drawable.bg_input_text)
                 binding.edtQuantity.setBackgroundResource(R.drawable.bg_input_error)
                 Toast.makeText(requireContext(), "O campo quantidade não pode estar em branco.", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            binding.edtCowName.setBackgroundResource(R.drawable.bg_input_error)
-            Toast.makeText(requireContext(), "O campo nome não pode estar em branco.", Toast.LENGTH_SHORT).show()
         }
     }
 

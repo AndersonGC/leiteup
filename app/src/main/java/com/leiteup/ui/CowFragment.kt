@@ -84,7 +84,7 @@ class CowFragment : Fragment() {
             filteredCowList.addAll(cowList)
         } else {
             for (cow in cowList) {
-                if (cow.name.uppercase().contains(searchText)) {
+                if ((cow.name.uppercase().contains(searchText)) || cow.earring.toString() == searchText) {
                     filteredCowList.add(cow)
                 }
             }

@@ -59,7 +59,7 @@ class FormReproductionFragment : Fragment() {
 
         if (cowName.isNotEmpty()) {
             if(datePregnant.isNotEmpty()) {
-                cowController.cowExists(cowName, { exists ->
+                cowController.cowExists(cowName, { exists, cow ->
                     if (exists) {
                         cowController.updateCowWithPragnant(cowName, datePregnant, true,
                             onSuccess = {
