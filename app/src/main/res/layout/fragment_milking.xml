@@ -46,14 +46,48 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nome:"
-            android:layout_marginLeft="6dp"
-            android:textSize="16sp"
             android:layout_marginTop="100dp"
+            android:text="Cadastrar usando:"
+            android:layout_marginLeft="6dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:textColor="@color/blue_app"
             android:layout_marginBottom="8dp"/>
+        <RadioGroup
+            android:id="@+id/choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
+            android:padding="1dp">
+
+            <RadioButton
+                android:id="@+id/btnEarring"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="Brinco"
+                android:buttonTint="@color/blue_app"
+                android:textColor="@color/blue_app"
+                />
+            <RadioButton
+                android:id="@+id/btnName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="Nome"
+                android:buttonTint="@color/blue_app"
+                android:textColor="@color/blue_app"/>
+        </RadioGroup>
+
         <EditText
-            android:id="@+id/edtCowName"
+            android:id="@+id/edtCowNameOrEarring"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_input_text"

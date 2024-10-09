@@ -49,8 +49,43 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
         }
     }
 
+//    fun updateCowAndMilkings(
+//        oldCowName: String,
+//        oldCowEarring: Int,
+//        updatedCow: Cow,
+//        onSuccess: () -> Unit,
+//        onError: (String) -> Unit
+//    ) {
+//        val databaseReference: DatabaseReference = FirebaseHelper.getDatabase()
+//            .child("cow")
+//            .child(FirebaseHelper.getIdUser() ?: "")
+//
+//        databaseReference.child(updatedCow.id).setValue(updatedCow)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    Log.d("COW_UPDATE", "Animal atualizado com sucesso.")
+//
+//                    if (oldCowName != updatedCow.name) {
+//                        updateMilkingsWithNewCowName(oldCowName, updatedCow.name, onSuccess, onError)
+//                    }
+//                    if(oldCowEarring != updatedCow.earring) {
+//                        updateMilkingsWithNewCowEarring(oldCowEarring, updatedCow.earring, onSuccess, onError)
+//                    }
+//                    onSuccess()
+//                } else {
+//                    Log.e("COW_UPDATE", "Erro ao atualizar animal: ${task.exception?.message}")
+//                    onError("Erro ao atualizar o animal.")
+//                }
+//            }
+//            .addOnFailureListener { e ->
+//                Log.e("COW_UPDATE", "Erro ao atualizar animal: ${e.message}")
+//                onError(e.message ?: "Erro desconhecido ao atualizar o animal.")
+//            }
+//    }
+
     fun updateCowAndMilkings(
         oldCowName: String,
+        oldCowEarring: Int,
         updatedCow: Cow,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
@@ -59,16 +94,51 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
             .child("cow")
             .child(FirebaseHelper.getIdUser() ?: "")
 
+        // Atualizar o animal
         databaseReference.child(updatedCow.id).setValue(updatedCow)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("COW_UPDATE", "Animal atualizado com sucesso.")
 
-                    if (oldCowName != updatedCow.name) {
-                        updateMilkingsWithNewCowName(oldCowName, updatedCow.name, onSuccess, onError)
-                    } else {
-                        onSuccess() // Se o nome não foi alterado, apenas completa a operação
+                    // Variáveis para rastrear se as ordenhas foram atualizadas
+                    var updatesCompleted = 0
+                    val updatesNeeded = 2 // Nome e brinco
+
+                    // Função para verificar se todas as atualizações foram feitas
+                    fun checkIfUpdateIsComplete() {
+                        updatesCompleted++
+                        if (updatesCompleted == updatesNeeded) {
+                            onSuccess()
+                        }
                     }
+
+                    // Atualizar nome das ordenhas se necessário
+                    if (oldCowName != updatedCow.name) {
+                        updateMilkingsWithNewCowName(oldCowName, updatedCow.name, {
+                            checkIfUpdateIsComplete() // Sucesso
+                        }, { error ->
+                            onError("Erro ao atualizar o nome das ordenhas: $error") // Erro
+                        })
+                    } else {
+                        updatesCompleted++ // Nome não precisa ser atualizado
+                    }
+
+                    // Atualizar brinco das ordenhas se necessário
+                    if (oldCowEarring != updatedCow.earring) {
+                        updateMilkingsWithNewCowEarring(oldCowEarring, updatedCow.earring, {
+                            checkIfUpdateIsComplete() // Sucesso
+                        }, { error ->
+                            onError("Erro ao atualizar o brinco das ordenhas: $error") // Erro
+                        })
+                    } else {
+                        updatesCompleted++ // Brinco não precisa ser atualizado
+                    }
+
+                    // Se nome e brinco não precisarem ser atualizados, chamar onSuccess diretamente
+                    if (updatesCompleted == updatesNeeded) {
+                        onSuccess()
+                    }
+
                 } else {
                     Log.e("COW_UPDATE", "Erro ao atualizar animal: ${task.exception?.message}")
                     onError("Erro ao atualizar o animal.")
@@ -80,13 +150,14 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
             }
     }
 
+
     private fun updateMilkingsWithNewCowName(
         oldCowName: String,
         newCowName: String,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
-        val milkingReference = FirebaseHelper.getDatabase().child("milkings")
+        val milkingReference = FirebaseHelper.getDatabase().child("milkings").child(FirebaseHelper.getIdUser() ?: "")
 
         // Busca todas as ordenhas vinculadas ao nome antigo da vaca
         milkingReference.orderByChild("cowName").equalTo(oldCowName)
@@ -109,6 +180,45 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                         onSuccess()
                     } else {
                         Log.d("MILKING_UPDATE", "Nenhuma ordenha encontrada para o nome da vaca: $oldCowName")
+                        onSuccess()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("MILKING_UPDATE", "Falha ao ler ordenhas: ${databaseError.toException()}")
+                    onError("Falha ao ler as ordenhas.")
+                }
+            })
+    }
+
+    private fun updateMilkingsWithNewCowEarring(
+        oldCowEarring: Int,
+        newCowEarring: Int,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val milkingReference = FirebaseHelper.getDatabase().child("milkings").child(FirebaseHelper.getIdUser() ?: "")
+
+        milkingReference.orderByChild("cowEarring").equalTo(oldCowEarring.toDouble())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Itera sobre todas as ordenhas encontradas e atualiza o nome da vaca
+                        for (childSnapshot in dataSnapshot.children) {
+                            val milking = childSnapshot.getValue(Milking::class.java)
+                            if (milking != null) {
+
+                                milking.cowEarring = newCowEarring
+
+                                milkingReference.child(milking.id).setValue(milking)
+                                    .addOnFailureListener {
+                                        Log.e("MILKING_UPDATE", "Erro ao atualizar ordenha: ${it.message}")
+                                    }
+                            }
+                        }
+                        onSuccess()
+                    } else {
+                        Log.d("MILKING_UPDATE", "Nenhuma ordenha encontrada para o nome da vaca: $oldCowEarring")
                         onSuccess()
                     }
                 }
@@ -206,19 +316,23 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
     }
 
 
-    fun cowExists(cowName: String, onResult: (Boolean) -> Unit, onError: (String) -> Unit) {
+    fun cowExists(cowName: String, onResult: (Boolean, Cow?) -> Unit, onError: (String) -> Unit) {
         val cowReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
-        Log.i("COW_VALIDATE", "ACHOUUU " + cowName)
+
         cowReference.orderByChild("name").equalTo(cowName)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Log.i("COW_VALIDATE", "ACHOUUU " + cowName)
-                        onResult(true)
-                    } else {
-                        Log.i("COW_VALIDATE", "NAO ACHOUUU " + cowName)
-                        onResult(false)
+                        // Iterar sobre os filhos para pegar o primeiro objeto Cow
+                        for (snapshot in dataSnapshot.children) {
+                            val cow = snapshot.getValue(Cow::class.java) // Converte o snapshot para o objeto Cow
+                            if (cow != null) {
+                                onResult(true, cow) // Retorna true e o objeto Cow
+                                return
+                            }
+                        }
                     }
+                    onResult(false, null) // Caso não exista ou não consiga pegar o objeto
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -228,17 +342,22 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
             })
     }
 
-    fun cowExistsByEarring(earring: Int, onResult: (Boolean) -> Unit, onError: (String) -> Unit) {
+    fun cowExistsByEarring(earring: Int, onResult: (Boolean, Cow?) -> Unit, onError: (String) -> Unit) {
         val cowReference = FirebaseHelper.getDatabase().child("cow").child(FirebaseHelper.getIdUser() ?: "")
 
         cowReference.orderByChild("earring").equalTo(earring.toDouble())
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(childDataSnapshot: DataSnapshot) {
                     if (childDataSnapshot.exists()) {
-                        onResult(true) // Se o animal com o brinco existe
-                        Log.i("COW_VALIDATE", "CHAMOU: " + childDataSnapshot.children.toString())
+                        for (snapshot in childDataSnapshot.children) {
+                            val cow = snapshot.getValue(Cow::class.java) // Converte o snapshot para o objeto Cow
+                            if (cow != null) {
+                                onResult(true, cow) // Retorna true e o objeto Cow
+                                return
+                            }
+                        }
                     } else {
-                        onResult(false) // Se o animal com o brinco não foi encontrado
+                        onResult(false, null)
                     }
                 }
 

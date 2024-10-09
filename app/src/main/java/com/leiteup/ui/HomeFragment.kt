@@ -7,12 +7,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.leiteup.R
+import com.leiteup.controller.CowController
+import com.leiteup.controller.MilkingController
 import com.leiteup.databinding.FragmentHomeBinding
+import com.leiteup.helper.FirebaseHelper
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var cowController: CowController
+    private lateinit var milkingController: MilkingController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        milkingController = MilkingController()
+        cowController = CowController()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +37,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initClicks()
+        updateUI()
+    }
+
+    private fun updateUI() {
+        cowController.fetchCows(FirebaseHelper.getIdUser() ?: " ")
     }
 
     private fun initClicks() {

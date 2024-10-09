@@ -13,7 +13,7 @@ import java.util.Locale
 
 class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Unit = {}, private val onError: (String) -> Unit = {}) {
 
-    fun validateAndSaveMilking(cowName: String, quantity: Double, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun validateAndSaveMilking(cowName: String, quantity: Double, cowEarring: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val instantDate = LocalDate.now().format(formatter)
 
@@ -22,6 +22,7 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
 
         FirebaseHelper.getDatabase()
             .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
             .orderByChild("cowName")
             .equalTo(cowName)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -30,9 +31,9 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
                         .filter { it.date == instantDate }
 
                     when (existingMilkings.size) {
-                        0 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 1, onSuccess, onError)
-                        1 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 2, onSuccess, onError)
-                        2 -> saveMilking(cowName, quantity, instantDate, dateTimestamp, 3, onSuccess, onError)
+                        0 -> saveMilking(cowName, quantity, cowEarring, instantDate, dateTimestamp, 1, onSuccess, onError)
+                        1 -> saveMilking(cowName, quantity, cowEarring, instantDate, dateTimestamp, 2, onSuccess, onError)
+                        2 -> saveMilking(cowName, quantity, cowEarring, instantDate, dateTimestamp, 3, onSuccess, onError)
                         else -> onError("Não é permitido registrar mais de três ordenhas para a mesma data.")
                     }
                 }
@@ -43,10 +44,11 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
             })
     }
 
-    private fun saveMilking(cowName: String, quantity: Double, instantDate: String, dateTimestamp: Long, milkingNumber: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    private fun saveMilking(cowName: String, quantity: Double, cowEarring: Int, instantDate: String, dateTimestamp: Long, milkingNumber: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
         val milking = Milking(
             cowName = cowName,
             quantity = quantity,
+            cowEarring = cowEarring,
             date = instantDate,
             dateTimestamp = dateTimestamp,
             milkingNumber = milkingNumber
@@ -54,6 +56,7 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
 
         FirebaseHelper.getDatabase()
             .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
             .child(milking.id)
             .setValue(milking)
             .addOnCompleteListener { task ->
@@ -65,10 +68,11 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
             }
     }
 
-    fun updateMilking(milkingId: String, newCowName: String, newQuantity: Double, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun updateMilking(milkingId: String, newCowName: String, cowEarring: Int, newQuantity: Double, onSuccess: () -> Unit, onError: (String) -> Unit) {
         // Obtém a referência do Firebase para a ordenha com o ID fornecido
         val milkingReference = FirebaseHelper.getDatabase()
             .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
             .child(milkingId)
 
         // Verifica se a ordenha existe
@@ -78,6 +82,7 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
                     // Ordenha encontrada, agora atualizamos os valores
                     val updates = mapOf<String, Any>(
                         "cowName" to newCowName,
+                        "cowEarring" to cowEarring,
                         "quantity" to newQuantity
                     )
 
@@ -103,6 +108,7 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
     fun deleteMilking(milkingId: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
         val milkingReference = FirebaseHelper.getDatabase()
             .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
             .child(milkingId)
 
         milkingReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -128,7 +134,7 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
     }
 
     fun fetchMilkingsWithCowName(cowName: String) {
-        val milkingsReference = FirebaseHelper.getDatabase().child("milkings")
+        val milkingsReference = FirebaseHelper.getDatabase().child("milkings").child(FirebaseHelper.getIdUser() ?: "")
 
         milkingsReference
             .orderByChild("cowName")
@@ -169,6 +175,7 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
 
         FirebaseHelper.getDatabase()
             .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
             .orderByChild("cowName")
             .equalTo(cowName)
             .addValueEventListener(object : ValueEventListener {
@@ -215,6 +222,7 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
 
         FirebaseHelper.getDatabase()
             .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val milkingList = mutableListOf<Milking>()

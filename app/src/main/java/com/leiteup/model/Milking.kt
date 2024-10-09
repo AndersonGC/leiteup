@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 @IgnoreExtraProperties
 data class Milking(
     var cowName: String = "",
+    var cowEarring: Int = 0,
     var date: String = "",
     var dateTimestamp: Long = 0L,
     var quantity: Double = 0.0,

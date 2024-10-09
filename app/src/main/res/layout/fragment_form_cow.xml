@@ -41,11 +41,57 @@
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
-<!--            Earring-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgCowPhoto"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="100dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:contentDescription="Foto do animal"
+                android:src="@drawable/img"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="30dp"
+                android:text="Escolha a foto*:"
+                android:layout_marginLeft="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/blue_app"
+                android:layout_marginBottom="8dp"/>
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/btnChoosePhoto"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/bg_input_text"
+                    android:padding="16dp"
+                    android:textColorHint="@color/color_default"
+                    tools:ignore="RtlSymmetry" />
+
+                <ImageButton
+                    android:id="@+id/btnTakePhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bt_gradient"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_cam" />
+            </LinearLayout>
+
+            <!--            Earring-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:text="Brinco*:"
                 android:layout_marginLeft="6dp"
                 android:textSize="16sp"
