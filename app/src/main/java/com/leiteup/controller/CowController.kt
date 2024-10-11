@@ -32,6 +32,7 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
     }
 
     fun deleteCow(cowId: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+
         val cowReference = FirebaseHelper.getDatabase()
             .child("cow")
             .child(FirebaseHelper.getIdUser() ?: " ")

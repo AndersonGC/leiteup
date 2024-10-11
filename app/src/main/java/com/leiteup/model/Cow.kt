@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @IgnoreExtraProperties
 data class Cow(
-//    var cowImage: ByteArray? = null,
     var breed: String = "",
     var earring: Int = 0,
     var father: String = "",
@@ -21,6 +20,7 @@ data class Cow(
     var birthDay: String = "",
     var pregnant: Boolean = false,
     var pregnantDate: String = "",
+    var imageUrl: String = "",
 ) : Parcelable {
     init {
         if (id.isEmpty()) {

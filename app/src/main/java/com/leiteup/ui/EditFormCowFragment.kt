@@ -211,6 +211,7 @@ class EditFormCowFragment : Fragment() {
                 isIATF = newIatf,
                 father = newFather,
                 mother = newMother,
+                imageUrl = cow.imageUrl,
                 pregnant = cow.pregnant,
                 pregnantDate = cow.pregnantDate
             )

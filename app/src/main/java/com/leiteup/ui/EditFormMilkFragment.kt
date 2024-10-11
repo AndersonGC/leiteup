@@ -23,6 +23,8 @@ class EditFormMilkFragment : Fragment() {
     private lateinit var cowController: CowController
     private lateinit var milkingController: MilkingController
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

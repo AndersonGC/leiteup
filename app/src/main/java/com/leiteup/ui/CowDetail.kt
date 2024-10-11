@@ -10,7 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.storage.FirebaseStorage
 import com.leiteup.R
 import com.leiteup.controller.CowController
 import com.leiteup.controller.MilkingController
@@ -58,9 +60,23 @@ class CowDetail : Fragment() {
     }
 
     private fun updateUI() {
-
         view?.findViewById<TextView>(R.id.setEarring)?.text = cow.earring.toString()
         view?.findViewById<TextView>(R.id.setName)?.text = cow.name
+
+        if(cow.imageUrl.isNotEmpty()) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(cow.imageUrl)
+                .downloadUrl
+                .addOnSuccessListener { uri ->
+                    Glide.with(this)
+                        .load(uri.toString()) // Use a URL de download obtida
+                        .into(binding.imageDetail)
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("FirebaseStorage", "Erro ao carregar a imagem", exception)
+                }
+        } else {
+            binding.imageDetail.setBackgroundResource(R.drawable.img)
+        }
         milkingController.getAverageMilkingsLast7Days(cow.name,
             onResult = { average ->
                 view?.findViewById<TextView>(R.id.setMilk)?.let { textView ->
@@ -103,16 +119,58 @@ class CowDetail : Fragment() {
             .setTitle("Excluir Animal")
             .setMessage("Tem certeza que deseja excluir este animal?")
             .setPositiveButton("Sim") { _, _ ->
-                cowController.deleteCow(
-                    cow.id,
-                    onSuccess = {
-                        findNavController().popBackStack()
-                        Toast.makeText(requireContext(), "Animal deletado com sucesso", Toast.LENGTH_SHORT).show()
-                    },
-                    onError = { errorMessage ->
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-                    }
-                )
+                if(cow.imageUrl.isNotEmpty()) {
+                    val imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(cow.imageUrl)
+                    imageRef.delete()
+                        .addOnSuccessListener {
+                            cowController.deleteCow(
+                                cow.id,
+                                onSuccess = {
+                                    findNavController().popBackStack()
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Animal deletado com sucesso",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                },
+                                onError = { errorMessage ->
+                                    Toast.makeText(
+                                        requireContext(),
+                                        errorMessage,
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+                            )
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(
+                                requireContext(),
+                                "Erro ao excluir a imagem: ${exception.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                } else {
+                    cowController.deleteCow(
+                        cow.id,
+                        onSuccess = {
+                            findNavController().popBackStack()
+                            Toast.makeText(
+                                requireContext(),
+                                "Animal deletado com sucesso",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                        onError = { errorMessage ->
+                            Toast.makeText(
+                                requireContext(),
+                                errorMessage,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    )
+                }
             }
             .setNegativeButton("Não", null)
             .show()
