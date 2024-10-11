@@ -1,14 +1,18 @@
 package com.leiteup.ui
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import com.leiteup.R
 import com.leiteup.controller.CowController
 import com.leiteup.databinding.FragmentFormCowBinding
@@ -28,10 +32,21 @@ class FormCowFragment : Fragment() {
 
     private lateinit var cowController: CowController
 
+    private var imageUri: Uri? = null // Armazena a URI da imagem
+
+    private val getImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            imageUri = it
+            binding.btnChoosePhoto.setText(imageUri.toString())
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cowController = CowController()
+        cow = Cow()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,13 +57,17 @@ class FormCowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initListeners()
     }
 
     private fun initListeners() {
-        binding.edtDate.setOnClickListener() {showDatePickerDialog()}
-        binding.btnAddCow.setOnClickListener() { validadeEarring() }
+        binding.edtDate.setOnClickListener { showDatePickerDialog() }
+        binding.btnAddCow.setOnClickListener { validadeEarring() }
+        binding.btnTakePhoto.setOnClickListener { openGallery() }
+    }
+
+    private fun openGallery() {
+        getImage.launch("image/*")
     }
 
     private fun validadeEarring() {
@@ -58,6 +77,7 @@ class FormCowFragment : Fragment() {
         if (earringText.isEmpty()) {
             earringText = generateUniqueEarring()
         }
+
         cowController.cowExistsByEarring(earringText.toInt(), { exists, cow ->
             if (exists) {
                 binding.edtEarring.setBackgroundResource(R.drawable.bg_input_error)
@@ -70,12 +90,12 @@ class FormCowFragment : Fragment() {
                 validateCow(earringText, cowName)
             }
         }, { error ->
-            Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Erro ao verificar brinco: $error", Toast.LENGTH_SHORT).show()
         })
     }
 
     private fun validateCow(earringText: String, cowName: String) {
-        if(cowName.isNotEmpty()) {
+        if (cowName.isNotEmpty()) {
             cowController.cowExists(cowName, { exists, cow ->
                 if (exists && cow != null) {
                     binding.edtName.setBackgroundResource(R.drawable.bg_input_error)
@@ -88,7 +108,7 @@ class FormCowFragment : Fragment() {
                     proceedWithValidation(earringText, cowName)
                 }
             }, { error ->
-                Toast.makeText(requireContext(), "o.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Erro ao verificar animal: $error", Toast.LENGTH_SHORT).show()
             })
         } else {
             isValid = false
@@ -99,8 +119,7 @@ class FormCowFragment : Fragment() {
     }
 
     private fun proceedWithValidation(earringText: String, cowName: String) {
-
-        var cowGender = when (binding.rGender.checkedRadioButtonId) {
+        val cowGender = when (binding.rGender.checkedRadioButtonId) {
             R.id.btnMale -> "Macho"
             R.id.btnFemale -> "Fêmea"
             else -> {
@@ -111,48 +130,41 @@ class FormCowFragment : Fragment() {
                 return
             }
         }
-        if(cowGender != null) {
-            isValid = true
-            binding.rGender.setBackgroundResource(R.drawable.bg_input_text)
-        }
 
         val breed = binding.edtBreed.text.toString().trim()
-        if(breed.isEmpty()) {
+        if (breed.isEmpty()) {
             isValid = false
             binding.edtBreed.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "Insira a raça do animal.", Toast.LENGTH_SHORT).show()
             binding.root.scrollTo(0, 0)
             return
         } else {
-            isValid = true
             binding.edtBreed.setBackgroundResource(R.drawable.bg_input_text)
         }
 
-        var weightText = binding.edtWeight.text.toString().trim()
-        if(weightText.isEmpty()) {
+        val weightText = binding.edtWeight.text.toString().trim()
+        if (weightText.isEmpty()) {
             isValid = false
             binding.edtWeight.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "Insira o peso do animal.", Toast.LENGTH_SHORT).show()
             binding.root.scrollTo(0, 0)
             return
         } else {
-            isValid = true
             binding.edtWeight.setBackgroundResource(R.drawable.bg_input_text)
         }
 
-        var birthDay = binding.edtDate.text.toString().trim()
-        if(birthDay.isEmpty()) {
+        val birthDay = binding.edtDate.text.toString().trim()
+        if (birthDay.isEmpty()) {
             isValid = false
             binding.edtDate.setBackgroundResource(R.drawable.bg_input_error)
             Toast.makeText(requireContext(), "Insira a data de nascimento do animal.", Toast.LENGTH_SHORT).show()
             binding.root.scrollTo(0, 0)
             return
         } else {
-            isValid = true
             binding.edtDate.setBackgroundResource(R.drawable.bg_input_text)
         }
 
-        var isIATF = when (binding.isIATF.checkedRadioButtonId) {
+        val isIATF = when (binding.isIATF.checkedRadioButtonId) {
             R.id.btnYes -> true
             R.id.btnNo -> false
             else -> {
@@ -163,10 +175,6 @@ class FormCowFragment : Fragment() {
                 return
             }
         }
-        if(isIATF != null) {
-            isValid = true
-            binding.isIATF.setBackgroundResource(R.drawable.bg_input_text)
-        }
 
         var father = binding.edtFather.text.toString().trim()
         var mother = binding.edtMother.text.toString().trim()
@@ -174,8 +182,7 @@ class FormCowFragment : Fragment() {
         if (!isValid) {
             return
         } else {
-            if(newCow) cow = Cow()
-            cow.breed = breed
+            if (newCow) cow.breed = breed
             cow.earring = earringText.toInt()
             cow.gender = cowGender
             cow.name = cowName
@@ -184,14 +191,33 @@ class FormCowFragment : Fragment() {
             cow.isIATF = isIATF
             cow.father = father
             cow.mother = mother
-
-            cowController.saveCow(cow, newCow, {
-                findNavController().popBackStack()
-                Toast.makeText(requireContext(), "Animal salvo com sucesso.", Toast.LENGTH_SHORT).show()
-            }, { errorMessage ->
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-            })
+            imageUri?.let { saveCowAndUploadImage(cow, it) }
         }
+    }
+
+    private fun saveCowAndUploadImage(cow: Cow, imageUri: Uri) {
+        val storageRef = FirebaseStorage.getInstance().reference
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val fileRef = storageRef.child("$userId/images/${System.currentTimeMillis()}.jpg")
+
+        cow.imageUrl = fileRef.toString()
+
+        fileRef.putFile(imageUri)
+            .addOnSuccessListener {
+                fileRef.downloadUrl.addOnSuccessListener { uri ->
+                }
+            }
+            .addOnFailureListener { exception ->
+            }
+
+        cowController.saveCow(cow, newCow, {
+            // Apenas após salvar o cow com sucesso, faça o upload da imagem
+
+            findNavController().popBackStack()
+            Toast.makeText(requireContext(), "Animal salvo com sucesso.", Toast.LENGTH_SHORT).show()
+        }, { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun generateUniqueEarring(): String {
@@ -206,8 +232,7 @@ class FormCowFragment : Fragment() {
         var isDuplicated = false
         cowController.cowExistsByEarring(earring, { exists, cow ->
             isDuplicated = exists
-        }, { error ->
-        })
+        }, { error -> })
         return isDuplicated
     }
 
