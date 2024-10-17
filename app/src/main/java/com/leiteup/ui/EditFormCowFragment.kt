@@ -1,6 +1,7 @@
 package com.leiteup.ui
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import com.leiteup.R
 import com.leiteup.controller.CowController
 import com.leiteup.databinding.FragmentEditFormCowBinding
@@ -28,6 +32,13 @@ class EditFormCowFragment : Fragment() {
     private lateinit var cow: Cow
 
     private var isValid = true
+    private var imageUri: Uri? = null // Armazena a URI da imagem
+    private val getImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            imageUri = it
+            binding.edtBtnChoosePhoto.setText(imageUri.toString())
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +91,11 @@ class EditFormCowFragment : Fragment() {
             validadeEarring()
         }
         binding.edtDate.setOnClickListener() {showDatePickerDialog()}
+        binding.btnTakePhoto.setOnClickListener() {openGallery()}
+    }
+
+    private fun openGallery() {
+        getImage.launch("image/*")
     }
 
 
@@ -211,25 +227,66 @@ class EditFormCowFragment : Fragment() {
                 isIATF = newIatf,
                 father = newFather,
                 mother = newMother,
-                imageUrl = cow.imageUrl,
                 pregnant = cow.pregnant,
                 pregnantDate = cow.pregnantDate
             )
+            if(imageUri == null) {
+                updatedCow.imageUrl = cow.imageUrl
+                updateCow(updatedCow)
+            } else {
+                imageUri?.let { editCowImage(updatedCow, it) }
+            }
 
-            cowController.updateCowAndMilkings(
-                oldCowName = cow.name,
-                oldCowEarring = cow.earring,
-                updatedCow = updatedCow, // O objeto Cow atualizado
-                onSuccess = {
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
-                    findNavController().popBackStack()
-                    Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
-                },
-                onError = { errorMessage ->
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-                }
-            )
         }
+    }
+
+    private fun editCowImage(updatedCow: Cow, newImageUri: Uri) {
+        if(cow.imageUrl.isEmpty()) {
+            updateCowAndUploadImage(cow, newImageUri)
+        } else {
+            val oldImageRef = FirebaseStorage.getInstance().getReferenceFromUrl(cow.imageUrl)
+            oldImageRef.delete()
+                .addOnSuccessListener {
+                    updateCowAndUploadImage(updatedCow, newImageUri)
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(requireContext(), "Erro ao excluir a imagem antiga: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun updateCowAndUploadImage(updatedCow: Cow, imageUri: Uri) {
+        val storageRef = FirebaseStorage.getInstance().reference
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val fileRef = storageRef.child("$userId/images/${System.currentTimeMillis()}.jpg")
+
+        updatedCow.imageUrl = fileRef.toString()
+
+        fileRef.putFile(imageUri)
+            .addOnSuccessListener {
+                fileRef.downloadUrl.addOnSuccessListener { uri ->
+                }
+            }
+            .addOnFailureListener { exception ->
+            }
+
+        updateCow(updatedCow)
+    }
+
+    private fun updateCow(updatedCow: Cow) {
+        cowController.updateCowAndMilkings(
+            oldCowName = cow.name,
+            oldCowEarring = cow.earring,
+            updatedCow = updatedCow, // O objeto Cow atualizado
+            onSuccess = {
+                findNavController().previousBackStackEntry?.savedStateHandle?.set("updatedCow", updatedCow)
+                findNavController().popBackStack()
+                Toast.makeText(requireContext(), "Animal atualizado com sucesso.", Toast.LENGTH_SHORT).show()
+            },
+            onError = { errorMessage ->
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
     private fun showDatePickerDialog() {
