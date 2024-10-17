@@ -96,7 +96,7 @@ class ReproductionFragment : Fragment() {
             filteredReproductionList.addAll(cowPregnant)
         } else {
             for (cow in cowPregnant) {
-                if (cow.name.uppercase().contains(searchText)) {
+                if (cow.name.uppercase().contains(searchText) || cow.earring.toString() == searchText) {
                     filteredReproductionList.add(cow)
                 }
             }
