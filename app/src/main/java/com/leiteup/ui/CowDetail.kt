@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -60,7 +61,15 @@ class CowDetail : Fragment() {
     }
 
     private fun updateUI() {
-        view?.findViewById<TextView>(R.id.setEarring)?.text = cow.earring.toString()
+
+        val linearLayout = view?.findViewById<LinearLayout>(R.id.textEarring)
+        if(!cow.hideEarring) {
+            linearLayout?.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.setEarring)?.text = cow.earring.toString()
+        } else {
+            linearLayout?.visibility = View.GONE
+        }
+
         view?.findViewById<TextView>(R.id.setName)?.text = cow.name
 
         if(cow.imageUrl.isNotEmpty()) {
