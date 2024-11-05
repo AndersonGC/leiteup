@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -33,10 +34,12 @@ class EditFormCowFragment : Fragment() {
 
     private var isValid = true
     private var imageUri: Uri? = null // Armazena a URI da imagem
+    var newHideEarring = false
     private val getImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             imageUri = it
-            binding.edtBtnChoosePhoto.setText(imageUri.toString())
+            binding.photoBar.progress = 0
+            simulateProgress()
         }
     }
 
@@ -45,6 +48,7 @@ class EditFormCowFragment : Fragment() {
         arguments?.let {
             cow = EditFormCowFragmentArgs.fromBundle(it).cow
         }
+        newHideEarring = cow.hideEarring
         cowController = CowController()
     }
 
@@ -112,6 +116,7 @@ class EditFormCowFragment : Fragment() {
                         binding.root.scrollTo(0, 0)
                     } else {
                         isValid = true
+                        newHideEarring = false
                         binding.edtEarring.setBackgroundResource(R.drawable.bg_input_text)
                         validateCow(newEarringText, newCowName)
                     }
@@ -228,7 +233,8 @@ class EditFormCowFragment : Fragment() {
                 father = newFather,
                 mother = newMother,
                 pregnant = cow.pregnant,
-                pregnantDate = cow.pregnantDate
+                pregnantDate = cow.pregnantDate,
+                hideEarring = newHideEarring
             )
             if(imageUri == null) {
                 updatedCow.imageUrl = cow.imageUrl
@@ -311,6 +317,28 @@ class EditFormCowFragment : Fragment() {
         )
 
         datePickerDialog.show()
+    }
+
+    private fun simulateProgress() {
+        val handler = android.os.Handler()
+        var progress = 0
+
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (progress < 100) {
+                    progress += 5
+                    binding.photoBar.progress = progress
+                    handler.postDelayed(this, 50)
+                } else {
+                    binding.photoBar.progressDrawable.setColorFilter(
+                        ContextCompat.getColor(requireContext(), R.color.blue_app),
+                        android.graphics.PorterDuff.Mode.SRC_IN
+
+                    )
+                    Toast.makeText(requireContext(), "Foto carregada.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }, 50)
     }
 
     override fun onDestroyView() {

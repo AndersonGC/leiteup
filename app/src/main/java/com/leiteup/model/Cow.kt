@@ -21,6 +21,7 @@ data class Cow(
     var pregnant: Boolean = false,
     var pregnantDate: String = "",
     var imageUrl: String = "",
+    var hideEarring: Boolean = false,
 ) : Parcelable {
     init {
         if (id.isEmpty()) {

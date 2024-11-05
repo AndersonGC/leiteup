@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -33,11 +34,13 @@ class FormCowFragment : Fragment() {
     private lateinit var cowController: CowController
 
     private var imageUri: Uri? = null // Armazena a URI da imagem
+    var hideEarring = false
 
     private val getImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             imageUri = it
-            binding.btnChoosePhoto.setText(imageUri.toString())
+            binding.photoBar.progress = 0
+            simulateProgress()
         }
     }
 
@@ -67,6 +70,8 @@ class FormCowFragment : Fragment() {
     }
 
     private fun openGallery() {
+        binding.photoBar.progress = 0
+        binding.photoBar.progressDrawable.colorFilter = null
         getImage.launch("image/*")
     }
 
@@ -191,7 +196,13 @@ class FormCowFragment : Fragment() {
             cow.isIATF = isIATF
             cow.father = father
             cow.mother = mother
-            imageUri?.let { saveCowAndUploadImage(cow, it) }
+            cow.hideEarring = hideEarring
+            if(binding.photoBar.progress == 100) {
+                imageUri?.let { saveCowAndUploadImage(cow, it) }
+            } else {
+                saveCow(cow)
+            }
+
         }
     }
 
@@ -210,9 +221,12 @@ class FormCowFragment : Fragment() {
             .addOnFailureListener { exception ->
             }
 
-        cowController.saveCow(cow, newCow, {
-            // Apenas após salvar o cow com sucesso, faça o upload da imagem
+        saveCow(cow)
+    }
 
+    private fun saveCow(cow: Cow) {
+
+        cowController.saveCow(cow, newCow, {
             findNavController().popBackStack()
             Toast.makeText(requireContext(), "Animal salvo com sucesso.", Toast.LENGTH_SHORT).show()
         }, { errorMessage ->
@@ -225,6 +239,7 @@ class FormCowFragment : Fragment() {
         do {
             newEarring = (0..99999).random()
         } while (isEarringDuplicated(newEarring))
+        hideEarring = true;
         return newEarring.toString()
     }
 
@@ -258,6 +273,28 @@ class FormCowFragment : Fragment() {
         )
 
         datePickerDialog.show()
+    }
+
+    private fun simulateProgress() {
+        val handler = android.os.Handler()
+        var progress = 0
+
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (progress < 100) {
+                    progress += 5
+                    binding.photoBar.progress = progress
+                    handler.postDelayed(this, 50)
+                } else {
+                    binding.photoBar.progressDrawable.setColorFilter(
+                        ContextCompat.getColor(requireContext(), R.color.blue_app),
+                        android.graphics.PorterDuff.Mode.SRC_IN
+
+                    )
+                    Toast.makeText(requireContext(), "Foto carregada.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }, 50)
     }
 
     override fun onDestroyView() {

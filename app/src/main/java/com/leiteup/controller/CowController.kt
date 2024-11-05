@@ -50,40 +50,6 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
         }
     }
 
-//    fun updateCowAndMilkings(
-//        oldCowName: String,
-//        oldCowEarring: Int,
-//        updatedCow: Cow,
-//        onSuccess: () -> Unit,
-//        onError: (String) -> Unit
-//    ) {
-//        val databaseReference: DatabaseReference = FirebaseHelper.getDatabase()
-//            .child("cow")
-//            .child(FirebaseHelper.getIdUser() ?: "")
-//
-//        databaseReference.child(updatedCow.id).setValue(updatedCow)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    Log.d("COW_UPDATE", "Animal atualizado com sucesso.")
-//
-//                    if (oldCowName != updatedCow.name) {
-//                        updateMilkingsWithNewCowName(oldCowName, updatedCow.name, onSuccess, onError)
-//                    }
-//                    if(oldCowEarring != updatedCow.earring) {
-//                        updateMilkingsWithNewCowEarring(oldCowEarring, updatedCow.earring, onSuccess, onError)
-//                    }
-//                    onSuccess()
-//                } else {
-//                    Log.e("COW_UPDATE", "Erro ao atualizar animal: ${task.exception?.message}")
-//                    onError("Erro ao atualizar o animal.")
-//                }
-//            }
-//            .addOnFailureListener { e ->
-//                Log.e("COW_UPDATE", "Erro ao atualizar animal: ${e.message}")
-//                onError(e.message ?: "Erro desconhecido ao atualizar o animal.")
-//            }
-//    }
-
     fun updateCowAndMilkings(
         oldCowName: String,
         oldCowEarring: Int,
@@ -401,7 +367,6 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
                                 results.add(Pair(cow, adjustedAverage))
                                 processedCowsCount++
                                 Log.d("Firebase", "processedCowsCount: " + processedCowsCount)
-                                // bug nesse if, onde o processedCow é somente 1 mas o cowsCount retorna todas as vacas, mas nem todas as vacas tem ordenha nos ultimos 7 dias
                                 if (processedCowsCount == cowsCount) {
                                     onResult(results)
                                     Log.d("Firebase", "results2:" + results.toString())
@@ -562,6 +527,4 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
             }
         })
     }
-
-
 }
