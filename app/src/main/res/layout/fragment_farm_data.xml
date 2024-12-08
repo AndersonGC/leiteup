@@ -49,6 +49,16 @@
                 android:padding="16dp"
                 tools:ignore="MissingConstraints">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Fazenda"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue_app"
+                    android:textSize="16sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="Quantidade de Animais:"
+                        android:text="Total de animais:"
                         android:textColor="@color/blue_app"
                         android:textSize="16sp" />
 
@@ -84,12 +94,60 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="Produção diária total:"
+                        android:text="Total de prenhas:"
                         android:textColor="@color/blue_app"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/setDailyProduction"
+                        android:id="@+id/setPregnant"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_input_text"
+                android:orientation="vertical"
+                android:padding="16dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Produção"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue_app"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Total de produção mensal:"
+                        android:textColor="@color/blue_app"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/setTotalMonthlyProduction"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -109,7 +167,78 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="Melhor animal:"
+                        android:text="Total de produção semanal:"
+                        android:textColor="@color/blue_app"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/setTotalWeeklyProduction"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Total de produção diária:"
+                        android:textColor="@color/blue_app"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/setTotalProductionToday"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_input_text"
+                android:orientation="vertical"
+                android:padding="16dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Animais"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue_app"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Vaca mais produtiva:"
                         android:textColor="@color/blue_app"
                         android:textSize="16sp" />
 
@@ -123,18 +252,42 @@
                         android:text=""
                         android:textSize="18sp" />
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="7dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="Pior animal:"
+                        android:text="Média diária:"
+                        android:textColor="@color/blue_app"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/setAverageBestCow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Vaca menos produtiva:"
                         android:textColor="@color/blue_app"
                         android:textSize="16sp" />
 
@@ -148,7 +301,36 @@
                         android:text=""
                         android:textSize="18sp" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Média diária:"
+                        android:textColor="@color/blue_app"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/setAverageWorstCow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+
+
 
             </LinearLayout>
+
+
         </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

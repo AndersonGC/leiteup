@@ -7,6 +7,7 @@ import com.google.firebase.database.ValueEventListener
 import com.leiteup.helper.FirebaseHelper
 import com.leiteup.model.Milking
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -252,4 +253,50 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
                 }
             })
     }
+
+    fun getTotalMilkingsForPeriod(days: Long, onResult: (Double) -> Unit, onError: (String) -> Unit) {
+        val currentDate = LocalDate.now()
+        val startDate = currentDate.minusDays(days)
+
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        val formattedStartDate = startDate.format(formatter)
+
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val startOfPeriodTimestamp = dateFormat.parse(formattedStartDate)?.time ?: 0L
+        val endOfDayTimestamp = Instant.now().toEpochMilli()
+        //val endOfDayTimestamp = currentDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli() - 1 // até o fim de ontem
+
+        FirebaseHelper.getDatabase()
+            .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val milkingList = mutableListOf<Milking>()
+
+                    // Itera por todas as ordenhas no banco de dados
+                    for (childSnapshot in dataSnapshot.children) {
+                        val milking = childSnapshot.getValue(Milking::class.java)
+                        if (milking != null) {
+                            // Verifica se a ordenha ocorreu no período especificado
+                            if (milking.dateTimestamp in startOfPeriodTimestamp..endOfDayTimestamp) {
+                                milkingList.add(milking)
+                            }
+                        }
+                    }
+
+                    // Calcula a soma das ordenhas do período
+                    if (milkingList.isNotEmpty()) {
+                        val totalMilkQuantity = milkingList.sumOf { it.quantity }
+                        onResult(totalMilkQuantity)
+                    } else {
+                        onError("Nenhuma ordenha encontrada para o período especificado.")
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    onError("Falha ao consultar o banco de dados.")
+                }
+            })
+    }
+
 }
