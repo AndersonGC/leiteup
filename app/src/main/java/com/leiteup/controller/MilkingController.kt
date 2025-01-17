@@ -1,6 +1,8 @@
 package com.leiteup.controller
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -298,5 +300,43 @@ class MilkingController(private val onMilkingDataReceived: (List<Milking>) -> Un
                 }
             })
     }
+
+    fun deleteAllMilkingsByCowName(cowName: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val milkingsReference = FirebaseHelper.getDatabase()
+            .child("milkings")
+            .child(FirebaseHelper.getIdUser() ?: "")
+
+        // Consulta as ordenhas pelo nome da vaca
+        milkingsReference.orderByChild("cowName")
+            .equalTo(cowName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Itera por todas as ordenhas encontradas e remove
+                        val tasks = mutableListOf<Task<Void>>() // Lista de tasks para acompanhar as remoções
+                        for (childSnapshot in dataSnapshot.children) {
+                            val task = childSnapshot.ref.removeValue()
+                            tasks.add(task)
+                        }
+
+                        // Aguarda todas as remoções serem concluídas
+                        Tasks.whenAllComplete(tasks).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onSuccess()
+                            } else {
+                                onError("Erro ao remover algumas ou todas as ordenhas da vaca $cowName.")
+                            }
+                        }
+                    } else {
+                        onError("Nenhuma ordenha encontrada para a vaca $cowName.")
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    onError("Erro ao consultar o banco de dados: ${databaseError.message}")
+                }
+            })
+    }
+
 
 }

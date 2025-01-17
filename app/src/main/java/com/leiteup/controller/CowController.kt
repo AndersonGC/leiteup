@@ -31,23 +31,60 @@ fun saveCow(cow: Cow, isNewCow: Boolean, onSuccess: () -> Unit, onError: (String
         }
     }
 
-    fun deleteCow(cowId: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+//    fun deleteCow(cowId: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+//
+//        val cowReference = FirebaseHelper.getDatabase()
+//            .child("cow")
+//            .child(FirebaseHelper.getIdUser() ?: " ")
+//            .child(cowId)
+//
+//        cowReference.removeValue().addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                onSuccess()
+//            } else {
+//                onError("Erro ao deletar animal.")
+//            }
+//        }
+//        .addOnFailureListener {
+//            Log.e("COW_ERROR", "Erro ao deletar animal: ${it.message}")
+//        }
+//    }
 
+    fun deleteCow(cowId: String, cowName: String, milkingController: MilkingController, onSuccess: () -> Unit, onError: (String) -> Unit) {
         val cowReference = FirebaseHelper.getDatabase()
             .child("cow")
             .child(FirebaseHelper.getIdUser() ?: " ")
             .child(cowId)
 
-        cowReference.removeValue().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onSuccess()
-            } else {
-                onError("Erro ao deletar animal.")
+        // Primeiro remove as ordenhas relacionadas à vaca
+        milkingController.deleteAllMilkingsByCowName(
+            cowName = cowName,
+            onSuccess = {
+                // Após deletar as ordenhas, remove a vaca
+                cowReference.removeValue().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onError("Erro ao deletar animal.")
+                    }
+                }.addOnFailureListener {
+                    Log.e("COW_ERROR", "Erro ao deletar animal: ${it.message}")
+                    onError("Erro ao deletar animal: ${it.message}")
+                }
+            },
+            onError = { error ->
+                cowReference.removeValue().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onError("Erro ao deletar animal.")
+                    }
+                }.addOnFailureListener {
+                    Log.e("COW_ERROR", "Erro ao deletar animal: ${it.message}")
+                    onError("Erro ao deletar animal: ${it.message}")
+                }
             }
-        }
-        .addOnFailureListener {
-            Log.e("COW_ERROR", "Erro ao deletar animal: ${it.message}")
-        }
+        )
     }
 
     fun updateCowAndMilkings(
