@@ -58,7 +58,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lorem ipsum dolor sit amet?"
+                        android:text="Quantas vezes devo ordenhar as vacas?"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:textColor="@color/blue_app"
@@ -69,9 +69,45 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:justificationMode="inter_word"
-                        android:text="Lorem ipsum dolor sit amet. Vel accusantium dolorem qui dolores repellendus a earum quos qui architecto quam est rerum quae et accusamus quibusdam in galisum reprehenderit. Qui sint laboriosam qui quas ducimus non recusandae dolore non nihil obcaecati."
+                        android:text="O mais indicado é ordenhar a vaca de duas a três vezes ao dia, desde o primeiro dia pós-parto. Em sistemas de aleitamento natural, essa ordenha deve ser feita após o bezerro ter mamado"
                         android:textSize="18sp"
                         android:layout_marginEnd="8dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_input_text"
+                android:orientation="vertical"
+                android:padding="16dp"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Como dar o concentrado aos animais?"
+                        android:textColor="@color/blue_app"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="189dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="8dp"
+                        android:justificationMode="inter_word"
+                        android:text="O concentrado deve ser misturado ao volumoso para as vacas. Isso permite consumo mais constante e ajuda a prevenir problemas digestivos, principalmente acidose. Para mais informações sobre quantidades de concentrado consulte a aba Dieta Regulada do aplicativo"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -94,7 +130,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lorem ipsum dolor sit amet?"
+                        android:text="Garanta uma boa alimentação"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:textColor="@color/blue_app"
@@ -105,14 +141,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:justificationMode="inter_word"
-                        android:text="Lorem ipsum dolor sit amet. Vel accusantium dolorem qui dolores repellendus a earum quos qui architecto quam est rerum quae et accusamus quibusdam in galisum reprehenderit. Qui sint laboriosam qui quas ducimus non recusandae dolore non nihil obcaecati."
+                        android:text="A boa alimentação do rebanho é fator extremamente importante para a obtenção de bons índices reprodutivos, como idade à primeira parição e intervalos entre partos."
                         android:textSize="18sp"
                         android:layout_marginEnd="8dp"/>
 
                 </LinearLayout>
 
-            </LinearLayout>
 
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,7 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lorem ipsum dolor sit amet?"
+                        android:text="Embrapa"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:textColor="@color/blue_app"
@@ -142,11 +178,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:justificationMode="inter_word"
-                        android:text="Lorem ipsum dolor sit amet. Vel accusantium dolorem qui dolores repellendus a earum quos qui architecto quam est rerum quae et accusamus quibusdam in galisum reprehenderit. Qui sint laboriosam qui quas ducimus non recusandae dolore non nihil obcaecati."
+                        android:text="Para mais dicas e informações sobre o manejo, alimentação e reprodução dos animais, você pode acessar o portal da Embrapa (Empresa Brasileira de Pesquisa Agropecuária). Uma instituição pública que desenvolve pesquisas, inovação e soluções para a agricultura e pecuária.\n\nwww.embrapa.br"
+                        android:autoLink="web"
+                        android:linksClickable="true"
                         android:textSize="18sp"
-                        android:layout_marginEnd="8dp"/>
+                        android:layout_marginEnd="8dp" />
+
 
                 </LinearLayout>
+
 
             </LinearLayout>
 

@@ -134,6 +134,8 @@ class CowDetail : Fragment() {
                         .addOnSuccessListener {
                             cowController.deleteCow(
                                 cow.id,
+                                cow.name,
+                                milkingController,
                                 onSuccess = {
                                     findNavController().popBackStack()
                                     Toast.makeText(
@@ -162,6 +164,8 @@ class CowDetail : Fragment() {
                 } else {
                     cowController.deleteCow(
                         cow.id,
+                        cow.name,
+                        milkingController,
                         onSuccess = {
                             findNavController().popBackStack()
                             Toast.makeText(

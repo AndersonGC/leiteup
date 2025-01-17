@@ -29,7 +29,6 @@
             android:textColorHint="@color/color_default"
             android:drawableLeft="@drawable/ic_hint_login"
             android:drawablePadding="10dp"
-            android:text="andeersongc@gmail.com"
             android:inputType="textEmailAddress"
             android:hint=" Usuário"
             android:padding="16dp"/>
@@ -44,7 +43,6 @@
             android:textColorHint="@color/color_default"
             android:drawableLeft="@drawable/ic_hint_password"
             android:drawablePadding="10dp"
-            android:text="teste123"
             android:inputType="textPassword"
             android:hint=" Senha"
             android:padding="16dp"/>
