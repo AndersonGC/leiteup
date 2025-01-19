@@ -14,8 +14,8 @@ android {
         applicationId = "com.leiteup"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,7 +66,6 @@ dependencies {
 
     //UI
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
 }

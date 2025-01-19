@@ -2,12 +2,12 @@ package com.leiteup.ui.auth
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -78,18 +78,24 @@ class LoginFragment : Fragment() {
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                } else {
-                    Toast.makeText(requireContext(), FirebaseHelper.validError(task.exception?.message ?: ""),
-                        Toast.LENGTH_SHORT).show()
+                if (isAdded && _binding != null) { // Garante que o fragmento está ativo
+                    if (task.isSuccessful) {
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            FirebaseHelper.validError(task.exception?.message ?: ""),
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                    Log.i("LOGIN_ERROR", "loginUser: ${task.exception?.message}")
+                        Log.i("LOGIN_ERROR", "loginUser: ${task.exception?.message}")
 
-                    binding.progressBar.isVisible = false;
+                        binding.progressBar.isVisible = false
+                    }
                 }
             }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
